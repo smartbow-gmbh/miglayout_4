@@ -39,10 +39,12 @@ import net.miginfocom.layout.ContainerWrapper;
 import java.awt.*;
 
 /**
+ *
  */
 public final class SwingContainerWrapper extends SwingComponentWrapper implements ContainerWrapper
 {
-	/** Debug color for cell outline.
+	/**
+	 * Debug color for cell outline.
 	 */
 	private static final Color DB_CELL_OUTLINE = new Color(255, 0, 0);
 

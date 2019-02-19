@@ -32,6 +32,7 @@ package net.miginfocom.swing;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;
 import net.miginfocom.layout.PlatformDefaults;
@@ -44,6 +45,7 @@ import java.lang.reflect.Method;
 import java.util.IdentityHashMap;
 
 /**
+ *
  */
 public class SwingComponentWrapper implements ComponentWrapper
 {
@@ -51,7 +53,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 	private static boolean vp = true;
 
-	/** Debug color for component bounds outline.
+	/**
+	 * Debug color for component bounds outline.
 	 */
 	private static final Color DB_COMP_OUTLINE = new Color(0, 0, 200);
 
@@ -72,8 +75,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 		try {
 			Object[] args = new Object[] {
-				new Integer(width < 0 ? c.getWidth() : width),
-				new Integer(height < 0 ? c.getHeight() : height)
+					new Integer(width < 0 ? c.getWidth() : width),
+					new Integer(height < 0 ? c.getHeight() : height)
 			};
 
 			return ((Integer) BL_METHOD.invoke(c, args)).intValue();
@@ -87,14 +90,15 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return c;
 	}
 
-	/** Cache.
+	/**
+	 * Cache.
 	 */
 	private final static IdentityHashMap<FontMetrics, Point.Float> FM_MAP = new IdentityHashMap<FontMetrics, Point.Float>(4);
 	private final static Font SUBST_FONT = new Font("sansserif", Font.PLAIN, 11);
 
 	public final float getPixelUnitFactor(boolean isHor)
 	{
-		switch (PlatformDefaults.getLogicalPixelBase()) {
+		switch(PlatformDefaults.getLogicalPixelBase()) {
 			case PlatformDefaults.BASE_FONT_SIZE:
 				Font font = c.getFont();
 				FontMetrics fm = c.getFontMetrics(font != null ? font : SUBST_FONT);
@@ -190,6 +194,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 		return c.getMinimumSize().width;
 	}
+
 	public final int getPreferredHeight(int sz)
 	{
 		// If the component has not gotten size yet and there is a size hint, trick Swing to return a better height.
@@ -441,10 +446,12 @@ public class SwingComponentWrapper implements ComponentWrapper
 		return getComponent().equals(((ComponentWrapper) o).getComponent());
 	}
 
-	/** Cached method used for getting base line with reflection.
+	/**
+	 * Cached method used for getting base line with reflection.
 	 */
 	private static Method BL_METHOD = null;
 	private static Method BL_RES_METHOD = null;
+
 	static {
 		try {
 			BL_METHOD = Component.class.getDeclaredMethod("getBaseline", new Class[] {int.class, int.class});
@@ -454,6 +461,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 	}
 
 	private static Method IMS_METHOD = null;
+
 	static {
 		try {
 			IMS_METHOD = Component.class.getDeclaredMethod("isMaximumSizeSet", (Class[]) null);

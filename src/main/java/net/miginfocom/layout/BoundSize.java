@@ -38,7 +38,8 @@ import java.io.*;
  *         Date: 2006-sep-08
  */
 
-/** A size that contains minimum, preferred and maximum size of type {@link UnitValue}.
+/**
+ * A size that contains minimum, preferred and maximum size of type {@link UnitValue}.
  * <p>
  * This class is a simple value container and it is immutable.
  * <p>
@@ -56,8 +57,10 @@ public class BoundSize implements Serializable
 	private final transient UnitValue max;
 	private final transient boolean gapPush;
 
-	/** Constructor that use the same value for min/preferred/max size.
-	 * @param minMaxPref The value to use for min/preferred/max size.
+	/**
+	 * Constructor that use the same value for min/preferred/max size.
+	 *
+	 * @param minMaxPref   The value to use for min/preferred/max size.
 	 * @param createString The string used to create the BoundsSize.
 	 */
 	public BoundSize(UnitValue minMaxPref, String createString)
@@ -65,11 +68,13 @@ public class BoundSize implements Serializable
 		this(minMaxPref, minMaxPref, minMaxPref, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used. Use
+	/**
+	 * Constructor. <b>This method is here for serilization only and should normally not be used. Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
-	 * @param min The minimum size. May be <code>null</code>.
-	 * @param preferred  The preferred size. May be <code>null</code>.
-	 * @param max  The maximum size. May be <code>null</code>.
+	 *
+	 * @param min          The minimum size. May be <code>null</code>.
+	 * @param preferred    The preferred size. May be <code>null</code>.
+	 * @param max          The maximum size. May be <code>null</code>.
 	 * @param createString The string used to create the BoundsSize.
 	 */
 	public BoundSize(UnitValue min, UnitValue preferred, UnitValue max, String createString)    // Bound to old delegate!!!!!
@@ -77,12 +82,14 @@ public class BoundSize implements Serializable
 		this(min, preferred, max, false, createString);
 	}
 
-	/** Constructor. <b>This method is here for serilization only and should normally not be used. Use
+	/**
+	 * Constructor. <b>This method is here for serilization only and should normally not be used. Use
 	 * {@link ConstraintParser#parseBoundSize(String, boolean, boolean)} instead.
-	 * @param min The minimum size. May be <code>null</code>.
-	 * @param preferred  The preferred size. May be <code>null</code>.
-	 * @param max  The maximum size. May be <code>null</code>.
-	 * @param gapPush If the size should be hinted as "pushing" and thus want to occupy free space if no one else is claiming it.
+	 *
+	 * @param min          The minimum size. May be <code>null</code>.
+	 * @param preferred    The preferred size. May be <code>null</code>.
+	 * @param max          The maximum size. May be <code>null</code>.
+	 * @param gapPush      If the size should be hinted as "pushing" and thus want to occupy free space if no one else is claiming it.
 	 * @param createString The string used to create the BoundsSize.
 	 */
 	public BoundSize(UnitValue min, UnitValue preferred, UnitValue max, boolean gapPush, String createString)
@@ -95,7 +102,9 @@ public class BoundSize implements Serializable
 		LayoutUtil.putCCString(this, createString);    // this escapes!!
 	}
 
-	/** Returns the minimum size as sent into the constructor.
+	/**
+	 * Returns the minimum size as sent into the constructor.
+	 *
 	 * @return The minimum size as sent into the constructor. May be <code>null</code>.
 	 */
 	public final UnitValue getMin()
@@ -103,7 +112,9 @@ public class BoundSize implements Serializable
 		return min;
 	}
 
-	/** Returns the preferred size as sent into the constructor.
+	/**
+	 * Returns the preferred size as sent into the constructor.
+	 *
 	 * @return The preferred size as sent into the constructor. May be <code>null</code>.
 	 */
 	public final UnitValue getPreferred()
@@ -111,7 +122,9 @@ public class BoundSize implements Serializable
 		return pref;
 	}
 
-	/** Returns the maximum size as sent into the constructor.
+	/**
+	 * Returns the maximum size as sent into the constructor.
+	 *
 	 * @return The maximum size as sent into the constructor. May be <code>null</code>.
 	 */
 	public final UnitValue getMax()
@@ -119,7 +132,9 @@ public class BoundSize implements Serializable
 		return max;
 	}
 
-	/** If the size should be hinted as "pushing" and thus want to occupy free space if noone else is claiming it.
+	/**
+	 * If the size should be hinted as "pushing" and thus want to occupy free space if noone else is claiming it.
+	 *
 	 * @return The value.
 	 */
 	public boolean getGapPush()
@@ -127,7 +142,9 @@ public class BoundSize implements Serializable
 		return gapPush;
 	}
 
-	/** Returns if this bound size has no min, preferred and maximum size set (they are all <code>null</code>)
+	/**
+	 * Returns if this bound size has no min, preferred and maximum size set (they are all <code>null</code>)
+	 *
 	 * @return If unset.
 	 */
 	public boolean isUnset()
@@ -136,10 +153,12 @@ public class BoundSize implements Serializable
 		return this == ZERO_PIXEL || (pref == null && min == null && max == null && gapPush == false);
 	}
 
-	/** Makes sure that <code>size</code> is within min and max of this size.
-	 * @param size The size to constrain.
+	/**
+	 * Makes sure that <code>size</code> is within min and max of this size.
+	 *
+	 * @param size     The size to constrain.
 	 * @param refValue The reference to use for relative sizes.
-	 * @param parent The parent container.
+	 * @param parent   The parent container.
 	 * @return The size, constrained within min and max.
 	 */
 	public int constrain(int size, float refValue, ContainerWrapper parent)
@@ -151,7 +170,9 @@ public class BoundSize implements Serializable
 		return size;
 	}
 
-	/** Returns the minimum, preferred or maximum size for this bounded size.
+	/**
+	 * Returns the minimum, preferred or maximum size for this bounded size.
+	 *
 	 * @param sizeType The type. <code>LayoutUtil.MIN</code>, <code>LayoutUtil.PREF</code> or <code>LayoutUtil.MAX</code>.
 	 * @return
 	 */
@@ -169,12 +190,14 @@ public class BoundSize implements Serializable
 		}
 	}
 
-	/** Convert the bound sizes to pixels.
+	/**
+	 * Convert the bound sizes to pixels.
 	 * <p>
 	 * <code>null</code> bound sizes will be 0 for min and preferred and {@link net.miginfocom.layout.LayoutUtil#INF} for max.
+	 *
 	 * @param refSize The reference size.
-	 * @param parent The parent. Not <code>null</code>.
-	 * @param comp The component, if applicable, can be <code>null</code>.
+	 * @param parent  The parent. Not <code>null</code>.
+	 * @param comp    The component, if applicable, can be <code>null</code>.
 	 * @return An array of lenth three (min,pref,max).
 	 */
 	final int[] getPixelSizes(float refSize, ContainerWrapper parent, ComponentWrapper comp)
@@ -186,7 +209,9 @@ public class BoundSize implements Serializable
 		};
 	}
 
-	/** Returns the a constraint string that can be re-parsed to be the exact same UnitValue.
+	/**
+	 * Returns the a constraint string that can be re-parsed to be the exact same UnitValue.
+	 *
 	 * @return A String. Never <code>null</code>.
 	 */
 	String getConstraintString()
@@ -230,7 +255,8 @@ public class BoundSize implements Serializable
 	}
 
 	static {
-		LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate() {
+		LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate()
+		{
 			protected Expression instantiate(Object oldInstance, Encoder out)
 			{
 				BoundSize bs = (BoundSize) oldInstance;

@@ -38,6 +38,7 @@ import java.util.HashMap;
  */
 
 /**
+ *
  */
 public final class LinkHandler
 {
@@ -83,12 +84,14 @@ public final class LinkHandler
 		return ret;
 	}
 
-	/** Sets a key that can be linked to from any component.
+	/**
+	 * Sets a key that can be linked to from any component.
+	 *
 	 * @param layout The MigLayout instance
-	 * @param key The key to link to. This is the same as the ID in a component constraint.
-	 * @param x x
-	 * @param y y
-	 * @param width Width
+	 * @param key    The key to link to. This is the same as the ID in a component constraint.
+	 * @param x      x
+	 * @param y      y
+	 * @param width  Width
 	 * @param height Height
 	 * @return If the value was changed
 	 */
@@ -168,8 +171,10 @@ public final class LinkHandler
 		return true;
 	}
 
-	/** This method clear any weak references right away instead of waiting for the GC. This might be advantageous
+	/**
+	 * This method clear any weak references right away instead of waiting for the GC. This might be advantageous
 	 * if lots of layout are created and disposed of quickly to keep memory consumption down.
+	 *
 	 * @since 3.7.4
 	 */
 	public synchronized static void clearWeakReferencesNow()

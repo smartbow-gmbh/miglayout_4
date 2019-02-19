@@ -35,60 +35,74 @@ import java.util.HashMap;
  *         Date: 2006-sep-08
  */
 
-/** This class contains static methods to be used by IDE vendors to convert to and from String/API constraints.
+/**
+ * This class contains static methods to be used by IDE vendors to convert to and from String/API constraints.
  * <p>
  * <b>Note that {@link LayoutUtil#setDesignTime(ContainerWrapper, boolean)} should be set to <code>true</code> for this class'
  * methods to work.</b>
  */
 public class IDEUtil
 {
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue ZERO = UnitValue.ZERO;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue TOP = UnitValue.TOP;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue LEADING = UnitValue.LEADING;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue LEFT = UnitValue.LEFT;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue CENTER = UnitValue.CENTER;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue TRAILING = UnitValue.TRAILING;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue RIGHT = UnitValue.RIGHT;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue BOTTOM = UnitValue.BOTTOM;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue LABEL = UnitValue.LABEL;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue INF = UnitValue.INF;
 
-	/** A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
+	/**
+	 * A direct reference to the corresponding value for predefined UnitValues in {@link UnitValue}.
 	 */
 	public static final UnitValue BASELINE_IDENTITY = UnitValue.BASELINE_IDENTITY;
 
 	private final static String[] X_Y_STRINGS = new String[] {"x", "y", "x2", "y2"};
 
-	/** Returns the version of IDEUtil
+	/**
+	 * Returns the version of IDEUtil
+	 *
 	 * @return The version.
 	 */
 	public String getIDEUtilVersion()
@@ -96,9 +110,11 @@ public class IDEUtil
 		return "1.0";
 	}
 
-	/** Returns the grid cells that the components in <code>parentContainer</code> has.
+	/**
+	 * Returns the grid cells that the components in <code>parentContainer</code> has.
+	 *
 	 * @param parentContainer The parent container. It is an object since MigLayout is GUI toolkit
-	 * independent.
+	 *                        independent.
 	 * @return A new hashmap with the components mapped to an array [x, y, spanx, spany].
 	 * <p>
 	 * Dock components will always have x and y less than -30000 or more than 30000. This is since they
@@ -116,7 +132,8 @@ public class IDEUtil
 		return Grid.getGridPositions(parentContainer);
 	}
 
-	/** Returns the sizes of the rows and gaps for a container.
+	/**
+	 * Returns the sizes of the rows and gaps for a container.
 	 * There will be two arrays returned [0] and [1].
 	 * <p>
 	 * The first array will be the indexes of the rows where indexes that
@@ -127,8 +144,9 @@ public class IDEUtil
 	 * <code>[left inset][row size 1][gap 1][row size 2][gap 2][row size n][right inset]</code>.
 	 * <p>
 	 * The returned sizes will be the ones calculated in the last layout cycle.
+	 *
 	 * @param parentContainer The container to retuern the row sizes and gaps for. In Swing it will be a {@link java.awt.Container} and
-	 * in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
+	 *                        in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
 	 * @return The sizes or <code>null</code> if {@link LayoutUtil#isDesignTime(ContainerWrapper)} is <code>false</code> or
 	 * <code>parentContainer</code> does not have a MigLayout layout manager.
 	 * The returned sizes will be the ones calculated in the last layout cycle.
@@ -139,7 +157,8 @@ public class IDEUtil
 		return Grid.getSizesAndIndexes(parentContainer, true);
 	}
 
-	/** Returns the sizes of the columns and gaps for a container.
+	/**
+	 * Returns the sizes of the columns and gaps for a container.
 	 * There will be two arrays returned [0] and [1].
 	 * <p>
 	 * The first array will be the indexes of the columns where indexes that
@@ -150,8 +169,9 @@ public class IDEUtil
 	 * <code>[top inset][column size 1][gap 1][column size 2][gap 2][column size n][bottom inset]</code>.
 	 * <p>
 	 * The returned sizes will be the ones calculated in the last layout cycle.
+	 *
 	 * @param parentContainer The container to retuern the column sizes and gaps for. In Swing it will be a {@link java.awt.Container} and
-	 * in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
+	 *                        in SWT it will be a {@link org.eclipse.swt.widgets.Composite}.
 	 * @return The sizes and indexes or <code>null</code> if {@link LayoutUtil#isDesignTime(ContainerWrapper)} is <code>false</code> or
 	 * <code>parentContainer</code> does not have a MigLayout layout manager.
 	 * The returned sizes will be the ones calculated in the last layout cycle.
@@ -162,10 +182,12 @@ public class IDEUtil
 		return Grid.getSizesAndIndexes(parentContainer, false);
 	}
 
-	/** Returns the a constraint string that can be re-parsed to be the exact same AxisConstraint.
-	 * @param ac The axis constraint to return as a constraint string.
-	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
-	 * as a String type (e.g. "flowx, gap rel, right").
+	/**
+	 * Returns the a constraint string that can be re-parsed to be the exact same AxisConstraint.
+	 *
+	 * @param ac     The axis constraint to return as a constraint string.
+	 * @param asAPI  If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
+	 *               as a String type (e.g. "flowx, gap rel, right").
 	 * @param isCols The the constraint should be returned for columns rather than rows.
 	 * @return A String. Never <code>null</code>.
 	 */
@@ -204,10 +226,12 @@ public class IDEUtil
 		return sb.toString();
 	}
 
-	/** Adds the a constraint string that can be re-parsed to be the exact same DimConstraint.
-	 * @param dc The layout constraint to return as a constraint string.
+	/**
+	 * Adds the a constraint string that can be re-parsed to be the exact same DimConstraint.
+	 *
+	 * @param dc    The layout constraint to return as a constraint string.
 	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
-	 * as a String type (e.g. "flowx, gap rel, right").
+	 *              as a String type (e.g. "flowx, gap rel, right").
 	 */
 	private static final void addRowDimConstraintString(DimConstraint dc, StringBuffer sb, boolean asAPI)
 	{
@@ -290,8 +314,8 @@ public class IDEUtil
 			} else {
 				String s = getUV(al);
 				String alKw = (s.equals("top") || s.equals("bottom") || s.equals("left") || s.equals("label") ||
-							   s.equals("leading") || s.equals("center") || s.equals("trailing") ||
-							   s.equals("right") || s.equals("baseline")) ? "" : "align ";
+						s.equals("leading") || s.equals("center") || s.equals("trailing") ||
+						s.equals("right") || s.equals("baseline")) ? "" : "align ";
 				sb.append(',').append(alKw).append(s);
 			}
 		}
@@ -322,11 +346,13 @@ public class IDEUtil
 		}
 	}
 
-	/** Returns the a constraint string that can be re-parsed to be the exact same DimConstraint.
-	 * @param dc The layout constraint to return as a constraint string.
-	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
-	 * as a String type (e.g. "flowx, gap rel, right").
-	 * @param isHor The the DimConstraint is decoration something horizontal (column or x).
+	/**
+	 * Returns the a constraint string that can be re-parsed to be the exact same DimConstraint.
+	 *
+	 * @param dc        The layout constraint to return as a constraint string.
+	 * @param asAPI     If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
+	 *                  as a String type (e.g. "flowx, gap rel, right").
+	 * @param isHor     The the DimConstraint is decoration something horizontal (column or x).
 	 * @param noGrowAdd If <code>true</code> no grow constraints will be added.
 	 * @return A constraint string. Never <code>null</code>.
 	 */
@@ -402,7 +428,7 @@ public class IDEUtil
 		}
 
 		BoundSize gapBef = dc.getGapBefore();
-		BoundSize gapAft= dc.getGapAfter();
+		BoundSize gapAft = dc.getGapAfter();
 		if (gapBef != null || gapAft != null) {
 			if (asAPI) {
 				sb.append(isHor ? ".gapX(\"" : ".gapY(\"").append(getBS(gapBef)).append("\", \"").append(getBS(gapAft)).append("\")");
@@ -448,10 +474,12 @@ public class IDEUtil
 		}
 	}
 
-	/** Returns the a constraint string that can be re-parsed to be the exact same LayoutConstraint.
-	 * @param cc The component constraint to return as a constraint string.
+	/**
+	 * Returns the a constraint string that can be re-parsed to be the exact same LayoutConstraint.
+	 *
+	 * @param cc    The component constraint to return as a constraint string.
 	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
-	 * as a String type (e.g. "flowx, gap rel, right").
+	 *              as a String type (e.g. "flowx, gap rel, right").
 	 * @return A String. Never <code>null</code>.
 	 */
 	public static final String getConstraintString(CC cc, boolean asAPI)
@@ -605,7 +633,7 @@ public class IDEUtil
 		}
 
 		boolean noGrowAdd = cc.getHorizontal().getGrow() != null && cc.getHorizontal().getGrow().intValue() == 100 &&
-		                    cc.getVertical().getGrow() != null && cc.getVertical().getGrow().intValue() == 100;
+				cc.getVertical().getGrow() != null && cc.getVertical().getGrow().intValue() == 100;
 
 		addComponentDimConstraintString(cc.getHorizontal(), sb, asAPI, true, noGrowAdd);
 		addComponentDimConstraintString(cc.getVertical(), sb, asAPI, false, noGrowAdd);
@@ -619,10 +647,12 @@ public class IDEUtil
 		return s.length() == 0 || s.charAt(0) != ',' ? s : s.substring(1);
 	}
 
-	/** Returns the a constraint string that can be re-parsed to be the exact same LayoutConstraint.
-	 * @param lc The layout constraint to return as a constraint string.
+	/**
+	 * Returns the a constraint string that can be re-parsed to be the exact same LayoutConstraint.
+	 *
+	 * @param lc    The layout constraint to return as a constraint string.
 	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
-	 * as a String type (e.g. "flowx, gap rel, right").
+	 *              as a String type (e.g. "flowx, gap rel, right").
 	 * @return A String. Never <code>null</code>.
 	 */
 	public static final String getConstraintString(LC lc, boolean asAPI)
@@ -777,7 +807,9 @@ public class IDEUtil
 		return bs != null ? bs.getConstraintString() : "null";
 	}
 
-	/** Converts a <code>float</code> to a string and is removing the ".0" if the float is an integer.
+	/**
+	 * Converts a <code>float</code> to a string and is removing the ".0" if the float is an integer.
+	 *
 	 * @param f the float.
 	 * @return <code>f</code> as a string. Never <code>null</code>.
 	 */

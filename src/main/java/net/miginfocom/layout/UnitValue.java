@@ -46,138 +46,169 @@ public final class UnitValue implements Serializable
 
 	private static final ArrayList<UnitConverter> CONVERTERS = new ArrayList<UnitConverter>();
 
-	/** An operation indicating a static value.
+	/**
+	 * An operation indicating a static value.
 	 */
 	public static final int STATIC = 100;
 
-	/** An operation indicating a addition of two sub units.
+	/**
+	 * An operation indicating a addition of two sub units.
 	 */
 	public static final int ADD = 101; // Must have "sub-unit values"
 
-	/** An operation indicating a subtraction of two sub units
+	/**
+	 * An operation indicating a subtraction of two sub units
 	 */
 	public static final int SUB = 102; // Must have "sub-unit values"
 
-	/** An operation indicating a multiplication of two sub units.
+	/**
+	 * An operation indicating a multiplication of two sub units.
 	 */
 	public static final int MUL = 103; // Must have "sub-unit values"
 
-	/** An operation indicating a division of two sub units.
+	/**
+	 * An operation indicating a division of two sub units.
 	 */
 	public static final int DIV = 104; // Must have "sub-unit values"
 
-	/** An operation indicating the minimum of two sub units
+	/**
+	 * An operation indicating the minimum of two sub units
 	 */
 	public static final int MIN = 105; // Must have "sub-unit values"
 
-	/** An operation indicating the maximum of two sub units
+	/**
+	 * An operation indicating the maximum of two sub units
 	 */
 	public static final int MAX = 106; // Must have "sub-unit values"
 
-	/** An operation indicating the middle value of two sub units
+	/**
+	 * An operation indicating the middle value of two sub units
 	 */
 	public static final int MID = 107; // Must have "sub-unit values"
 
 
-
-
-	/** A unit indicating pixels.
+	/**
+	 * A unit indicating pixels.
 	 */
 	public static final int PIXEL = 0;
 
-	/** A unit indicating logical horizontal pixels.
+	/**
+	 * A unit indicating logical horizontal pixels.
 	 */
 	public static final int LPX = 1;
 
-	/** A unit indicating logical vertical pixels.
+	/**
+	 * A unit indicating logical vertical pixels.
 	 */
 	public static final int LPY = 2;
 
-	/** A unit indicating millimeters.
+	/**
+	 * A unit indicating millimeters.
 	 */
 	public static final int MM = 3;
 
-	/** A unit indicating centimeters.
+	/**
+	 * A unit indicating centimeters.
 	 */
 	public static final int CM = 4;
 
-	/** A unit indicating inches.
+	/**
+	 * A unit indicating inches.
 	 */
 	public static final int INCH = 5;
 
-	/** A unit indicating percent.
+	/**
+	 * A unit indicating percent.
 	 */
 	public static final int PERCENT = 6;
 
-	/** A unit indicating points.
+	/**
+	 * A unit indicating points.
 	 */
 	public static final int PT = 7;
 
-	/** A unit indicating screen percentage width.
+	/**
+	 * A unit indicating screen percentage width.
 	 */
 	public static final int SPX = 8;
 
-	/** A unit indicating screen percentage height.
+	/**
+	 * A unit indicating screen percentage height.
 	 */
 	public static final int SPY = 9;
 
-	/** A unit indicating alignment.
+	/**
+	 * A unit indicating alignment.
 	 */
 	public static final int ALIGN = 12;
 
-	/** A unit indicating minimum size.
+	/**
+	 * A unit indicating minimum size.
 	 */
 	public static final int MIN_SIZE = 13;
 
-	/** A unit indicating preferred size.
+	/**
+	 * A unit indicating preferred size.
 	 */
 	public static final int PREF_SIZE = 14;
 
-	/** A unit indicating maximum size.
+	/**
+	 * A unit indicating maximum size.
 	 */
 	public static final int MAX_SIZE = 15;
 
-	/** A unit indicating botton size.
+	/**
+	 * A unit indicating botton size.
 	 */
 	public static final int BUTTON = 16;
 
-	/** A unit indicating linking to x.
+	/**
+	 * A unit indicating linking to x.
 	 */
 	public static final int LINK_X = 18;   // First link
 
-	/** A unit indicating linking to y.
+	/**
+	 * A unit indicating linking to y.
 	 */
 	public static final int LINK_Y = 19;
 
-	/** A unit indicating linking to width.
+	/**
+	 * A unit indicating linking to width.
 	 */
 	public static final int LINK_W = 20;
 
-	/** A unit indicating linking to height.
+	/**
+	 * A unit indicating linking to height.
 	 */
 	public static final int LINK_H = 21;
 
-	/** A unit indicating linking to x2.
+	/**
+	 * A unit indicating linking to x2.
 	 */
 	public static final int LINK_X2 = 22;
 
-	/** A unit indicating linking to y2.
+	/**
+	 * A unit indicating linking to y2.
 	 */
 	public static final int LINK_Y2 = 23;
 
-	/** A unit indicating linking to x position on screen.
+	/**
+	 * A unit indicating linking to x position on screen.
 	 */
 	public static final int LINK_XPOS = 24;
 
-	/** A unit indicating linking to y position on screen.
+	/**
+	 * A unit indicating linking to y position on screen.
 	 */
 	public static final int LINK_YPOS = 25;    // Last link
 
-	/** A unit indicating a lookup.
+	/**
+	 * A unit indicating a lookup.
 	 */
 	public static final int LOOKUP = 26;
 
-	/** A unit indicating label alignment.
+	/**
+	 * A unit indicating label alignment.
 	 */
 	public static final int LABEL_ALIGN = 27;
 
@@ -268,12 +299,14 @@ public final class UnitValue implements Serializable
 		LayoutUtil.putCCString(this, createString);    // "this" escapes!! Safe though.
 	}
 
-	/** Returns the size in pixels rounded.
+	/**
+	 * Returns the size in pixels rounded.
+	 *
 	 * @param refValue The reference value. Normally the size of the parent. For unit {@link #ALIGN} the current size of the component should be sent in.
-	 * @param parent The parent. May be <code>null</code> for testing the validity of the value, but should normally not and are not
-	 * required to return any usable value if <code>null</code>.
-	 * @param comp The component, if any, that the value is for. Might be <code>null</code> if the value is not
-	 * connected to any component.
+	 * @param parent   The parent. May be <code>null</code> for testing the validity of the value, but should normally not and are not
+	 *                 required to return any usable value if <code>null</code>.
+	 * @param comp     The component, if any, that the value is for. Might be <code>null</code> if the value is not
+	 *                 connected to any component.
 	 * @return The size in pixels.
 	 */
 	public final int getPixels(float refValue, ContainerWrapper parent, ComponentWrapper comp)
@@ -282,12 +315,15 @@ public final class UnitValue implements Serializable
 	}
 
 	private static final float[] SCALE = new float[] {25.4f, 2.54f, 1f, 0f, 72f};
-	/** Returns the size in pixels.
+
+	/**
+	 * Returns the size in pixels.
+	 *
 	 * @param refValue The reference value. Normally the size of the parent. For unit {@link #ALIGN} the current size of the component should be sent in.
-	 * @param parent The parent. May be <code>null</code> for testing the validity of the value, but should normally not and are not
-	 * required to return any usable value if <code>null</code>.
-	 * @param comp The component, if any, that the value is for. Might be <code>null</code> if the value is not
-	 * connected to any component.
+	 * @param parent   The parent. May be <code>null</code> for testing the validity of the value, but should normally not and are not
+	 *                 required to return any usable value if <code>null</code>.
+	 * @param comp     The component, if any, that the value is for. Might be <code>null</code> if the value is not
+	 *                 connected to any component.
 	 * @return The size in pixels.
 	 */
 	public final float getPixelsExact(float refValue, ContainerWrapper parent, ComponentWrapper comp)
@@ -296,7 +332,7 @@ public final class UnitValue implements Serializable
 			return 1;
 
 		if (oper == STATIC) {
-			switch (unit) {
+			switch(unit) {
 				case PIXEL:
 					return value;
 
@@ -381,7 +417,7 @@ public final class UnitValue implements Serializable
 		if (subUnits != null && subUnits.length == 2) {
 			float r1 = subUnits[0].getPixelsExact(refValue, parent, comp);
 			float r2 = subUnits[1].getPixelsExact(refValue, parent, comp);
-			switch (oper) {
+			switch(oper) {
 				case ADD:
 					return r1 + r2;
 				case SUB:
@@ -528,8 +564,10 @@ public final class UnitValue implements Serializable
 		return getClass().getName() + ". Value=" + value + ", unit=" + unit + ", unitString: " + unitStr + ", oper=" + oper + ", isHor: " + isHor;
 	}
 
-	/** Returns the creation string for this object. Note that {@link LayoutUtil#setDesignTime(ContainerWrapper, boolean)} must be
+	/**
+	 * Returns the creation string for this object. Note that {@link LayoutUtil#setDesignTime(ContainerWrapper, boolean)} must be
 	 * set to <code>true</code> for the creation strings to be stored.
+	 *
 	 * @return The constraint string or <code>null</code> if none is registered.
 	 */
 	public final String getConstraintString()
@@ -542,10 +580,12 @@ public final class UnitValue implements Serializable
 		return (int) (value * 12345) + (oper >>> 5) + unit >>> 17;
 	}
 
-	/** Adds a global unit converter that can convert from some <code>unit</code> to pixels.
+	/**
+	 * Adds a global unit converter that can convert from some <code>unit</code> to pixels.
 	 * <p>
 	 * This converter will be asked before the platform converter so the values for it (e.g. "related" and "unrelated")
 	 * can be overridden. It is however not possible to override the built in ones (e.g. "mm", "pixel" or "lp").
+	 *
 	 * @param conv The converter. Not <code>null</code>.
 	 */
 	public final synchronized static void addGlobalUnitConverter(UnitConverter conv)
@@ -555,7 +595,9 @@ public final class UnitValue implements Serializable
 		CONVERTERS.add(conv);
 	}
 
-	/** Removed the converter.
+	/**
+	 * Removed the converter.
+	 *
 	 * @param unit The converter.
 	 * @return If there was a converter found and thus removed.
 	 */
@@ -564,7 +606,9 @@ public final class UnitValue implements Serializable
 		return CONVERTERS.remove(unit);
 	}
 
-	/** Returns the global converters currently registered. The platform converter will not be in this list.
+	/**
+	 * Returns the global converters currently registered. The platform converter will not be in this list.
+	 *
 	 * @return The converters. Never <code>null</code>.
 	 */
 	public final synchronized static UnitConverter[] getGlobalUnitConverters()
@@ -572,7 +616,9 @@ public final class UnitValue implements Serializable
 		return CONVERTERS.toArray(new UnitConverter[CONVERTERS.size()]);
 	}
 
-	/** Returns the current default unit. The default unit is the unit used if no unit is set. E.g. "width 10".
+	/**
+	 * Returns the current default unit. The default unit is the unit used if no unit is set. E.g. "width 10".
+	 *
 	 * @return The current default unit.
 	 * @see #PIXEL
 	 * @see #LPX
@@ -583,7 +629,9 @@ public final class UnitValue implements Serializable
 		return PlatformDefaults.getDefaultHorizontalUnit();
 	}
 
-	/** Sets the default unit. The default unit is the unit used if no unit is set. E.g. "width 10".
+	/**
+	 * Sets the default unit. The default unit is the unit used if no unit is set. E.g. "width 10".
+	 *
 	 * @param unit The new default unit.
 	 * @see #PIXEL
 	 * @see #LPX
@@ -596,17 +644,18 @@ public final class UnitValue implements Serializable
 	}
 
 	static {
-		LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate() {
+		LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate()
+		{
 			protected Expression instantiate(Object oldInstance, Encoder out)
 			{
 				UnitValue uv = (UnitValue) oldInstance;
-                String cs = uv.getConstraintString();
+				String cs = uv.getConstraintString();
 				if (cs == null)
 					throw new IllegalStateException("Design time must be on to use XML persistence. See LayoutUtil.");
 
 				return new Expression(oldInstance, ConstraintParser.class, "parseUnitValueOrAlign", new Object[] {
-		                uv.getConstraintString(), (uv.isHorizontal() ? Boolean.TRUE : Boolean.FALSE), null
-                });
+						uv.getConstraintString(), (uv.isHorizontal() ? Boolean.TRUE : Boolean.FALSE), null
+				});
 			}
 		});
 	}

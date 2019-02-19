@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 /**
+ *
  */
 public final class SwtContainerWrapper extends SwtComponentWrapper implements ContainerWrapper
 {

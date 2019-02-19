@@ -42,10 +42,12 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.widgets.*;
 
 /**
+ *
  */
 public class SwtComponentWrapper implements ComponentWrapper
 {
-	/** Debug color for component bounds outline.
+	/**
+	 * Debug color for component bounds outline.
 	 */
 	private static Color DB_COMP_OUTLINE = new Color(Display.getCurrent(), 0, 0, 200);
 
@@ -72,7 +74,7 @@ public class SwtComponentWrapper implements ComponentWrapper
 
 	public final float getPixelUnitFactor(boolean isHor)
 	{
-		switch (PlatformDefaults.getLogicalPixelBase()) {
+		switch(PlatformDefaults.getLogicalPixelBase()) {
 			case PlatformDefaults.BASE_FONT_SIZE:
 				GC gc = new GC(c);
 				FontMetrics fm = gc.getFontMetrics();
@@ -256,7 +258,9 @@ public class SwtComponentWrapper implements ComponentWrapper
 		vp = b;
 	}
 
-	/** Sets if minimum size for SWT components should be preferred size (default, false) or 0.
+	/**
+	 * Sets if minimum size for SWT components should be preferred size (default, false) or 0.
+	 *
 	 * @return <code>true</code> means minimum size is 0.
 	 */
 	public static boolean isMinimumSizeZero()
@@ -264,7 +268,9 @@ public class SwtComponentWrapper implements ComponentWrapper
 		return mz;
 	}
 
-	/** Sets if minimum size for SWT components should be preferred size (default, false) or 0.
+	/**
+	 * Sets if minimum size for SWT components should be preferred size (default, false) or 0.
+	 *
 	 * @param b <code>true</code> means minimum size is 0.
 	 */
 	public static void setMinimumSizeZero(boolean b)

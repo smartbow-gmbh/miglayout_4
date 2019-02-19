@@ -1,7 +1,3 @@
-package net.miginfocom.layout;
-
-import javax.swing.*;
-import java.util.HashMap;
 /*
  * License (BSD):
  * ==============
@@ -34,9 +30,12 @@ import java.util.HashMap;
  * @version 1.0
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
- * @author Xxxx Xxxx, Xxxx  - Gnome support
- *         Date: 2008-jan-16
  */
+
+package net.miginfocom.layout;
+
+import javax.swing.*;
+import java.util.HashMap;
 
 /**
  * Currently handles Windows, Mac OS X, and GNOME spacing.

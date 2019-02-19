@@ -1,7 +1,3 @@
-package net.miginfocom.layout;
-
-
-import java.util.*;
 /*
  * License (BSD):
  * ==============
@@ -35,6 +31,17 @@ import java.util.*;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeSet;
+import java.util.WeakHashMap;
 
 /**
  * Holds components in a grid. Does most of the logic behind the layout manager.

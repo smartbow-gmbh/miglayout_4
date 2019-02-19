@@ -1,8 +1,3 @@
-package net.miginfocom.layout;
-
-import java.io.*;
-import java.util.ArrayList;
-
 /*
  * License (BSD):
  * ==============
@@ -36,6 +31,15 @@ import java.util.ArrayList;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
+import java.util.ArrayList;
 
 /**
  * A constraint that holds the column <b>or</b> row constraints for the grid. It also holds the gaps between the rows and columns.

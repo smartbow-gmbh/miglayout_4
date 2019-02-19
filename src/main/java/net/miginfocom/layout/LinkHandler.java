@@ -1,8 +1,3 @@
-package net.miginfocom.layout;
-
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.HashMap;
 /*
  * License (BSD):
  * ==============
@@ -36,6 +31,12 @@ import java.util.HashMap;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *

@@ -1,6 +1,3 @@
-package net.miginfocom.layout;
-
-import java.util.HashMap;
 /*
  * License (BSD):
  * ==============
@@ -34,6 +31,10 @@ import java.util.HashMap;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.util.HashMap;
 
 /**
  * This class contains static methods to be used by IDE vendors to convert to and from String/API constraints.

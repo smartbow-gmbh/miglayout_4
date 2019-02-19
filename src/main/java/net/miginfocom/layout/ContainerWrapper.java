@@ -1,4 +1,3 @@
-package net.miginfocom.layout;
 /*
  * License (BSD):
  * ==============
@@ -33,6 +32,7 @@ package net.miginfocom.layout;
  *         Date: 2006-sep-08
  */
 
+package net.miginfocom.layout;
 /**
  * A class that wraps a container that contains components.
  */

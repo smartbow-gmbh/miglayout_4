@@ -1,4 +1,3 @@
-package net.miginfocom.swt;
 /*
  * License (BSD):
  * ==============
@@ -33,7 +32,18 @@ package net.miginfocom.swt;
  *         Date: 2006-sep-08
  */
 
-import net.miginfocom.layout.*;
+package net.miginfocom.swt;
+
+import net.miginfocom.layout.AC;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.ConstraintParser;
+import net.miginfocom.layout.ContainerWrapper;
+import net.miginfocom.layout.Grid;
+import net.miginfocom.layout.LC;
+import net.miginfocom.layout.LayoutCallback;
+import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.PlatformDefaults;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -41,9 +51,19 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Layout;
 
-import java.io.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
 import java.lang.ref.WeakReference;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A very flexbile layout manager.

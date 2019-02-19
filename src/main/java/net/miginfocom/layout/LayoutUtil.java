@@ -1,10 +1,3 @@
-package net.miginfocom.layout;
-
-import java.beans.*;
-import java.io.*;
-import java.util.IdentityHashMap;
-import java.util.TreeSet;
-import java.util.WeakHashMap;
 /*
  * License (BSD):
  * ==============
@@ -38,6 +31,25 @@ import java.util.WeakHashMap;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.beans.Beans;
+import java.beans.ExceptionListener;
+import java.beans.Introspector;
+import java.beans.PersistenceDelegate;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.OutputStream;
+import java.util.IdentityHashMap;
+import java.util.TreeSet;
+import java.util.WeakHashMap;
 
 /**
  * A utility class that has only static helper methods.

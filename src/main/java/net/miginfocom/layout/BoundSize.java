@@ -1,9 +1,3 @@
-package net.miginfocom.layout;
-
-import java.beans.Encoder;
-import java.beans.Expression;
-import java.beans.PersistenceDelegate;
-import java.io.*;
 /*
  * License (BSD):
  * ==============
@@ -37,6 +31,18 @@ import java.io.*;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.beans.Encoder;
+import java.beans.Expression;
+import java.beans.PersistenceDelegate;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
+import java.io.Serializable;
+
 
 /**
  * A size that contains minimum, preferred and maximum size of type {@link UnitValue}.

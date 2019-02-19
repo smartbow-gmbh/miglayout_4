@@ -1,6 +1,3 @@
-package net.miginfocom.layout;
-
-import java.io.*;
 /*
  * License (BSD):
  * ==============
@@ -34,6 +31,14 @@ import java.io.*;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.layout;
+
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
 
 /**
  * A simple value holder for a constraint for one dimension.

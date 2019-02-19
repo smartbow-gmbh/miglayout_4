@@ -16,7 +16,15 @@
       <module name="miglayout-3.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
-  <component name="CopyrightManager" default="" />
+  <component name="CopyrightManager" default="BSD">
+    <copyright>
+      <option name="notice" value="License (BSD):&#10;==============&#10;&#10;Copyright (c) 2004, Mikael Grev, MiG InfoCom AB. (miglayout (at) miginfocom (dot) com)&#10;All rights reserved.&#10;&#10;Redistribution and use in source and binary forms, with or without modification,&#10;are permitted provided that the following conditions are met:&#10;Redistributions of source code must retain the above copyright notice, this list&#10;of conditions and the following disclaimer.&#10;Redistributions in binary form must reproduce the above copyright notice, this&#10;list of conditions and the following disclaimer in the documentation and/or other&#10;materials provided with the distribution.&#10;Neither the name of the MiG InfoCom AB nor the names of its contributors may be&#10;used to endorse or promote products derived from this software without specific&#10;prior written permission.&#10;&#10;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND&#10;ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED&#10;WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.&#10;IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,&#10;INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,&#10;BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,&#10;OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,&#10;WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&#10;ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY&#10;OF SUCH DAMAGE.&#10;&#10;@version 1.0&#10;@author Mikael Grev, MiG InfoCom AB&#10;        Date: 2006-sep-08" />
+      <option name="myName" value="BSD" />
+    </copyright>
+    <module2copyright>
+      <element module="Project Files" copyright="BSD" />
+    </module2copyright>
+  </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
@@ -70,6 +78,8 @@
     <option name="USE_PER_PROJECT_SETTINGS" value="true" />
     <code_scheme name="Project" version="173">
       <JavaCodeStyleSettings>
+        <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="50" />
+        <option name="NAMES_COUNT_TO_USE_IMPORT_ON_DEMAND" value="30" />
         <option name="JD_DO_NOT_WRAP_ONE_LINE_COMMENTS" value="true" />
       </JavaCodeStyleSettings>
       <codeStyleSettings language="JAVA">

@@ -1,4 +1,3 @@
-package net.miginfocom.swt;
 /*
  * License (BSD):
  * ==============
@@ -32,6 +31,8 @@ package net.miginfocom.swt;
  * @author Mikael Grev, MiG InfoCom AB
  *         Date: 2006-sep-08
  */
+
+package net.miginfocom.swt;
 
 import net.miginfocom.layout.ComponentWrapper;
 import net.miginfocom.layout.ContainerWrapper;

@@ -1,4 +1,3 @@
-package net.miginfocom.swing;
 /*
  * License (BSD):
  * ==============
@@ -33,15 +32,35 @@ package net.miginfocom.swing;
  *         Date: 2006-sep-08
  */
 
-import net.miginfocom.layout.*;
+package net.miginfocom.swing;
+
+import net.miginfocom.layout.AC;
+import net.miginfocom.layout.BoundSize;
+import net.miginfocom.layout.CC;
+import net.miginfocom.layout.ComponentWrapper;
+import net.miginfocom.layout.ConstraintParser;
+import net.miginfocom.layout.ContainerWrapper;
+import net.miginfocom.layout.Grid;
+import net.miginfocom.layout.LC;
+import net.miginfocom.layout.LayoutCallback;
+import net.miginfocom.layout.LayoutUtil;
+import net.miginfocom.layout.PlatformDefaults;
+import net.miginfocom.layout.UnitValue;
 
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.util.*;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.ObjectStreamException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * A very flexible layout manager.

@@ -33,6 +33,7 @@
  */
 
 package net.miginfocom.layout;
+
 /**
  * A class that wraps the important parts of a Component.
  * <p>
@@ -262,7 +263,7 @@ public interface ComponentWrapper
 	 * Returns the DPI (Dots Per Inch) of the screen the component is currently in or for the default
 	 * screen if the component is not visible.
 	 * <p>
-	 * If headless mode {@link net.miginfocom.layout.PlatformDefaults#getDefaultDPI} will be returned.
+	 * If headless mode {@link PlatformDefaults#getDefaultDPI} will be returned.
 	 *
 	 * @return The DPI.
 	 */
@@ -272,7 +273,7 @@ public interface ComponentWrapper
 	 * Returns the DPI (Dots Per Inch) of the screen the component is currently in or for the default
 	 * screen if the component is not visible.
 	 * <p>
-	 * If headless mode {@link net.miginfocom.layout.PlatformDefaults#getDefaultDPI} will be returned.
+	 * If headless mode {@link PlatformDefaults#getDefaultDPI} will be returned.
 	 *
 	 * @return The DPI.
 	 */

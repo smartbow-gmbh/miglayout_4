@@ -101,8 +101,8 @@ public final class PlatformDefaults
 	 * will be used as a base for calculating the logical pixel size. This is much as how
 	 * Windows calculated DLU (dialog units).
 	 *
-	 * @see net.miginfocom.layout.UnitValue#LPX
-	 * @see net.miginfocom.layout.UnitValue#LPY
+	 * @see UnitValue#LPX
+	 * @see UnitValue#LPY
 	 * @see #setLogicalPixelBase(int)
 	 */
 	public static final int BASE_FONT_SIZE = 100;
@@ -113,8 +113,8 @@ public final class PlatformDefaults
 	 * <p>
 	 * This is the default value.
 	 *
-	 * @see net.miginfocom.layout.UnitValue#LPX
-	 * @see net.miginfocom.layout.UnitValue#LPY
+	 * @see UnitValue#LPX
+	 * @see UnitValue#LPY
 	 * @see #setLogicalPixelBase(int)
 	 * @see #setVerticalScaleFactor(Float)
 	 * @see #setHorizontalScaleFactor(Float)
@@ -125,8 +125,8 @@ public final class PlatformDefaults
 	 * I value indicating that the size of a logical pixel should always be a real pixel
 	 * and thus no compensation will be made.
 	 *
-	 * @see net.miginfocom.layout.UnitValue#LPX
-	 * @see net.miginfocom.layout.UnitValue#LPY
+	 * @see UnitValue#LPX
+	 * @see UnitValue#LPY
 	 * @see #setLogicalPixelBase(int)
 	 */
 	public static final int BASE_REAL_PIXEL = 102;
@@ -226,7 +226,7 @@ public final class PlatformDefaults
 				throw new IllegalArgumentException("Unknown platform: " + plaf);
 		}
 		CUR_PLAF = plaf;
-		BASE_DPI = BASE_DPI_FORCED != null ? BASE_DPI_FORCED.intValue() : getPlatformDPI(plaf);
+		BASE_DPI = BASE_DPI_FORCED != null ? BASE_DPI_FORCED : getPlatformDPI(plaf);
 	}
 
 	private static int getPlatformDPI(int plaf)
@@ -271,7 +271,7 @@ public final class PlatformDefaults
 	 */
 	public static void setDefaultDPI(Integer dpi)
 	{
-		BASE_DPI = dpi != null ? dpi.intValue() : getPlatformDPI(CUR_PLAF);
+		BASE_DPI = dpi != null ? dpi : getPlatformDPI(CUR_PLAF);
 		BASE_DPI_FORCED = dpi;
 	}
 
@@ -342,7 +342,7 @@ public final class PlatformDefaults
 	 *
 	 * @return The current base. Default is {@link #BASE_SCALE_FACTOR}
 	 * @see #BASE_FONT_SIZE
-	 * @see # BASE_SCREEN_DPI_FACTOR
+	 * @see #BASE_SCALE_FACTOR
 	 * @see #BASE_REAL_PIXEL
 	 */
 	public static int getLogicalPixelBase()
@@ -355,7 +355,7 @@ public final class PlatformDefaults
 	 *
 	 * @param base The new base. Default is {@link #BASE_SCALE_FACTOR}
 	 * @see #BASE_FONT_SIZE
-	 * @see # BASE_SCREEN_DPI_FACTOR
+	 * @see #BASE_SCALE_FACTOR
 	 * @see #BASE_REAL_PIXEL
 	 */
 	public static void setLogicalPixelBase(int base)
@@ -492,8 +492,8 @@ public final class PlatformDefaults
 	 */
 	public static final void setUnitValue(String[] unitStrings, UnitValue x, UnitValue y)
 	{
-		for (int i = 0; i < unitStrings.length; i++) {
-			String s = unitStrings[i].toLowerCase().trim();
+		for (String unitString : unitStrings) {
+			String s = unitString.toLowerCase().trim();
 			if (x != null)
 				HOR_DEFS.put(s, x);
 			if (y != null)
@@ -505,7 +505,7 @@ public final class PlatformDefaults
 	/**
 	 * Understands ("r", "rel", "related") OR ("u", "unrel", "unrelated") OR ("i", "ind", "indent") OR ("p", "para", "paragraph").
 	 */
-	static final int convertToPixels(float value, String unit, boolean isHor, float ref, ContainerWrapper parent, ComponentWrapper comp)
+	static int convertToPixels(float value, String unit, boolean isHor, float ref, ContainerWrapper parent, ComponentWrapper comp)
 	{
 		UnitValue uv = (isHor ? HOR_DEFS : VER_DEFS).get(unit);
 		return uv != null ? Math.round(value * uv.getPixels(ref, parent, comp)) : UnitConverter.UNABLE;
@@ -517,7 +517,7 @@ public final class PlatformDefaults
 	 * @return The button order.
 	 * @see #setButtonOrder(String)
 	 */
-	public static final String getButtonOrder()
+	public static String getButtonOrder()
 	{
 		return BUTTON_FORMAT;
 	}
@@ -561,7 +561,7 @@ public final class PlatformDefaults
 	 *
 	 * @param order The new button order for the current platform.
 	 */
-	public static final void setButtonOrder(String order)
+	public static void setButtonOrder(String order)
 	{
 		BUTTON_FORMAT = order;
 		MOD_COUNT++;
@@ -573,7 +573,7 @@ public final class PlatformDefaults
 	 * @param c The char. Must be lower case!
 	 * @return The tag that corresponds to the char or <code>null</code> if the char is unrecognized.
 	 */
-	static final String getTagForChar(char c)
+	static String getTagForChar(char c)
 	{
 		switch(c) {
 			case 'o':
@@ -714,8 +714,8 @@ public final class PlatformDefaults
 	 *
 	 * @param comp         The component that the gap is for. Never <code>null</code>.
 	 * @param adjacentComp The adjacent component if any. May be <code>null</code>.
-	 * @param adjacentSide What side the <code>adjacentComp</code> is on. {@link javax.swing.SwingUtilities#TOP} or
-	 *                     {@link javax.swing.SwingUtilities#LEFT} or {@link javax.swing.SwingUtilities#BOTTOM} or {@link javax.swing.SwingUtilities#RIGHT}.
+	 * @param adjacentSide What side the <code>adjacentComp</code> is on. {@link SwingUtilities#TOP} or
+	 *                     {@link SwingUtilities#LEFT} or {@link SwingUtilities#BOTTOM} or {@link SwingUtilities#RIGHT}.
 	 * @param tag          The tag string that the component might be tagged with in the component constraints. May be <code>null</code>.
 	 * @param isLTR        If it is left-to-right.
 	 * @return The default gap between two components or <code>null</code> if there should be no gap.
@@ -780,7 +780,7 @@ public final class PlatformDefaults
 	 * @see UnitValue#PIXEL
 	 * @see UnitValue#LPX
 	 */
-	public final static int getDefaultHorizontalUnit()
+	public static int getDefaultHorizontalUnit()
 	{
 		return DEF_H_UNIT;
 	}
@@ -792,7 +792,7 @@ public final class PlatformDefaults
 	 * @see UnitValue#PIXEL
 	 * @see UnitValue#LPX
 	 */
-	public final static void setDefaultHorizontalUnit(int unit)
+	public static void setDefaultHorizontalUnit(int unit)
 	{
 		if (unit < UnitValue.PIXEL || unit > UnitValue.LABEL_ALIGN)
 			throw new IllegalArgumentException("Illegal Unit: " + unit);
@@ -810,7 +810,7 @@ public final class PlatformDefaults
 	 * @see UnitValue#PIXEL
 	 * @see UnitValue#LPY
 	 */
-	public final static int getDefaultVerticalUnit()
+	public static int getDefaultVerticalUnit()
 	{
 		return DEF_V_UNIT;
 	}
@@ -822,7 +822,7 @@ public final class PlatformDefaults
 	 * @see UnitValue#PIXEL
 	 * @see UnitValue#LPY
 	 */
-	public final static void setDefaultVerticalUnit(int unit)
+	public static void setDefaultVerticalUnit(int unit)
 	{
 		if (unit < UnitValue.PIXEL || unit > UnitValue.LABEL_ALIGN)
 			throw new IllegalArgumentException("Illegal Unit: " + unit);

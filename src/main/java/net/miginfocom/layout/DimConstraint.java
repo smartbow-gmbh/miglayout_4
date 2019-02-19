@@ -223,7 +223,7 @@ public final class DimConstraint implements Externalizable
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 *
-	 * @param uv The new shrink priority. E.g. {@link UnitValue#CENTER} or {@link net.miginfocom.layout.UnitValue#LEADING}.
+	 * @param uv The new shrink priority. E.g. {@link UnitValue#CENTER} or {@link UnitValue#LEADING}.
 	 */
 	public void setAlign(UnitValue uv)
 	{
@@ -250,7 +250,7 @@ public final class DimConstraint implements Externalizable
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 *
 	 * @param size The new gap.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
+	 * @see ConstraintParser#parseBoundSize(String, boolean, boolean).
 	 */
 	public void setGapAfter(BoundSize size)
 	{
@@ -287,7 +287,7 @@ public final class DimConstraint implements Externalizable
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 *
 	 * @param size The new gap.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
+	 * @see ConstraintParser#parseBoundSize(String, boolean, boolean).
 	 */
 	public void setGapBefore(BoundSize size)
 	{
@@ -310,7 +310,7 @@ public final class DimConstraint implements Externalizable
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 *
 	 * @return The current size. Never <code>null</code> since v3.5.
-	 * @see net.miginfocom.layout.ConstraintParser#parseBoundSize(String, boolean, boolean).
+	 * @see ConstraintParser#parseBoundSize(String, boolean, boolean).
 	 */
 	public BoundSize getSize()
 	{
@@ -456,7 +456,7 @@ public final class DimConstraint implements Externalizable
 	 * @param defGap  The default gap to use if there is no gap set on this object (i.e. it is null).
 	 * @param refSize The reference size used to get the pixel sizes.
 	 * @param before  IF it is the gap before rather than the gap after to return.
-	 * @return The [min,preferred,max] sizes for the specified gap. Uses {@link net.miginfocom.layout.LayoutUtil#NOT_SET}
+	 * @return The [min,preferred,max] sizes for the specified gap. Uses {@link LayoutUtil#NOT_SET}
 	 * for gap sizes that are <code>null</code>. Returns <code>null</code> if there was no gap specified. A new and free to use array.
 	 */
 	int[] getRowGaps(ContainerWrapper parent, BoundSize defGap, int refSize, boolean before)
@@ -487,7 +487,7 @@ public final class DimConstraint implements Externalizable
 	 * @param adjacentSide What side the <code>adjacentComp</code> is on. 0 = top, 1 = left, 2 = bottom, 3 = right.
 	 * @param tag          The tag string that the component might be tagged with in the component constraints. May be <code>null</code>.
 	 * @param isLTR        If it is left-to-right.
-	 * @return The [min,preferred,max] sizes for the specified gap. Uses {@link net.miginfocom.layout.LayoutUtil#NOT_SET}
+	 * @return The [min,preferred,max] sizes for the specified gap. Uses {@link LayoutUtil#NOT_SET}
 	 * for gap sizes that are <code>null</code>. Returns <code>null</code> if there was no gap specified. A new and free to use array.
 	 */
 	int[] getComponentGaps(ContainerWrapper parent, ComponentWrapper comp, BoundSize adjGap, ComponentWrapper adjacentComp, String tag, int refSize, int adjacentSide, boolean isLTR)

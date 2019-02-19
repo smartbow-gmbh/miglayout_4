@@ -43,7 +43,6 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-
 /**
  * A size that contains minimum, preferred and maximum size of type {@link UnitValue}.
  * <p>
@@ -199,7 +198,7 @@ public class BoundSize implements Serializable
 	/**
 	 * Convert the bound sizes to pixels.
 	 * <p>
-	 * <code>null</code> bound sizes will be 0 for min and preferred and {@link net.miginfocom.layout.LayoutUtil#INF} for max.
+	 * <code>null</code> bound sizes will be 0 for min and preferred and {@link LayoutUtil#INF} for max.
 	 *
 	 * @param refSize The reference size.
 	 * @param parent  The parent. Not <code>null</code>.
@@ -261,22 +260,24 @@ public class BoundSize implements Serializable
 	}
 
 	static {
-		LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate()
-		{
-			protected Expression instantiate(Object oldInstance, Encoder out)
+		if (LayoutUtil.HAS_BEANS) {
+			LayoutUtil.setDelegate(BoundSize.class, new PersistenceDelegate()
 			{
-				BoundSize bs = (BoundSize) oldInstance;
-				if (Grid.TEST_GAPS) {
-					return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
-							bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getGapPush(), bs.getConstraintString()
-					});
-				} else {
-					return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
-							bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getConstraintString()
-					});
+				protected Expression instantiate(Object oldInstance, Encoder out)
+				{
+					BoundSize bs = (BoundSize) oldInstance;
+					if (Grid.TEST_GAPS) {
+						return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
+								bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getGapPush(), bs.getConstraintString()
+						});
+					} else {
+						return new Expression(oldInstance, BoundSize.class, "new", new Object[] {
+								bs.getMin(), bs.getPreferred(), bs.getMax(), bs.getConstraintString()
+						});
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	// ************************************************

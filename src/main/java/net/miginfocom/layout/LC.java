@@ -318,10 +318,10 @@ public final class LC implements Externalizable
 
 	/**
 	 * The insets for the layed out panel. The insets will be an empty space around the components in the panel. <code>null</code> values
-	 * means that the default panel insets for the platform is used. See {@link PlatformDefaults#setDialogInsets(net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue)}.
+	 * means that the default panel insets for the platform is used. See {@link PlatformDefaults#setDialogInsets(UnitValue, UnitValue, UnitValue, UnitValue)}.
 	 *
 	 * @return The insets. Of length 4 (top, left, bottom, right) or <code>null</code>. The elements (1 to 4) may be <code>null</code>. The array is a copy and can be used freely.
-	 * @see net.miginfocom.layout.ConstraintParser#parseInsets(String, boolean)
+	 * @see ConstraintParser#parseInsets(String, boolean)
 	 */
 	public final UnitValue[] getInsets()
 	{
@@ -330,11 +330,11 @@ public final class LC implements Externalizable
 
 	/**
 	 * The insets for the layed out panel. The insets will be an empty space around the components in the panel. <code>null</code> values
-	 * means that the default panel insets for the platform is used. See {@link PlatformDefaults#setDialogInsets(net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue, net.miginfocom.layout.UnitValue)}.
+	 * means that the default panel insets for the platform is used. See {@link PlatformDefaults#setDialogInsets(UnitValue, UnitValue, UnitValue, UnitValue)}.
 	 *
 	 * @param ins The new insets. Must be of length 4 (top, left, bottom, right) or <code>null</code>. The elements (1 to 4) may be <code>null</code> to use
 	 *            the platform default for that side. The array is copied for storage.
-	 * @see net.miginfocom.layout.ConstraintParser#parseInsets(String, boolean)
+	 * @see ConstraintParser#parseInsets(String, boolean)
 	 */
 	public final void setInsets(UnitValue[] ins)
 	{
@@ -429,7 +429,7 @@ public final class LC implements Externalizable
 	 * Returns after what cell the grid should always auto wrap.
 	 *
 	 * @return After what cell the grid should always auto wrap. If <code>0</code> the number of columns/rows in the
-	 * {@link net.miginfocom.layout.AC} is used. <code>LayoutUtil.INF</code> is used for no auto wrap.
+	 * {@link AC} is used. <code>LayoutUtil.INF</code> is used for no auto wrap.
 	 */
 	public final int getWrapAfter()
 	{
@@ -440,7 +440,7 @@ public final class LC implements Externalizable
 	 * Sets after what cell the grid should always auto wrap.
 	 *
 	 * @param count After what cell the grid should always auto wrap. If <code>0</code> the number of columns/rows in the
-	 *              {@link net.miginfocom.layout.AC} is used. <code>LayoutUtil.INF</code> is used for no auto wrap.
+	 *              {@link AC} is used. <code>LayoutUtil.INF</code> is used for no auto wrap.
 	 */
 	public final void setWrapAfter(int count)
 	{
@@ -639,7 +639,7 @@ public final class LC implements Externalizable
 	/**
 	 * Short for, and thus same as, <code>.pack("pref", "pref")</code>.
 	 * <p>
-	 * Same functionality as {@link #setPackHeight(BoundSize)} and {@link #setPackWidth(net.miginfocom.layout.BoundSize)}
+	 * Same functionality as {@link #setPackHeight(BoundSize)} and {@link #setPackWidth(BoundSize)}
 	 * only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -655,7 +655,7 @@ public final class LC implements Externalizable
 	/**
 	 * Sets the pack width and height.
 	 * <p>
-	 * Same functionality as {@link #setPackHeight(BoundSize)} and {@link #setPackWidth(net.miginfocom.layout.BoundSize)}
+	 * Same functionality as {@link #setPackHeight(BoundSize)} and {@link #setPackWidth(BoundSize)}
 	 * only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
@@ -693,7 +693,7 @@ public final class LC implements Externalizable
 	}
 
 	/**
-	 * Sets a wrap after the number of columns/rows that is defined in the {@link net.miginfocom.layout.AC}.
+	 * Sets a wrap after the number of columns/rows that is defined in the {@link AC}.
 	 * <p>
 	 * Same functionality as {@link #setWrapAfter(int 0)} only this method returns <code>this</code> for chaining multiple calls.
 	 * <p>
@@ -811,7 +811,7 @@ public final class LC implements Externalizable
 	 */
 	public final LC leftToRight(boolean b)
 	{
-		setLeftToRight(b ? Boolean.TRUE : Boolean.FALSE); // Not .valueOf due to retroweaver...
+		setLeftToRight(b ? Boolean.TRUE : Boolean.FALSE);
 		return this;
 	}
 
@@ -1074,7 +1074,7 @@ public final class LC implements Externalizable
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcomponents.com.
 	 *
 	 * @param mode The mode:<br>
-	 *             0 == Normal. Bounds will be caclulated as if the component was visible.<br>
+	 *             0 == Normal. Bounds will be calculated as if the component was visible.<br>
 	 *             1 == If hidden the size will be 0, 0 but the gaps remain.<br>
 	 *             2 == If hidden the size will be 0, 0 and gaps set to zero.<br>
 	 *             3 == If hidden the component will be disregarded completely and not take up a cell in the grid..
@@ -1102,12 +1102,12 @@ public final class LC implements Externalizable
 	}
 
 	/**
-	 * The width for the container as a min and/or preferref and/or maximum width. The value will override any value that is set on
+	 * The width for the container as a min and/or preferred and/or maximum width. The value will override any value that is set on
 	 * the container itself.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or Cheat Sheet at www.migcontainers.com.
 	 *
-	 * @param width The width expressed as a <code>Boundwidth</code>. E.g. "50:100px:200mm" or "100px".
+	 * @param width The width expressed as a <code>BoundSize</code>. E.g. "50:100px:200mm" or "100px".
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
 	 */
 	public final LC width(String width)
@@ -1145,12 +1145,12 @@ public final class LC implements Externalizable
 	}
 
 	/**
-	 * The height for the container as a min and/or preferref and/or maximum height. The value will override any value that is set on
+	 * The height for the container as a min and/or preferred and/or maximum height. The value will override any value that is set on
 	 * the container itself.
 	 * <p>
 	 * For a more thorough explanation of what this constraint does see the white paper or cheat Sheet at www.migcontainers.com.
 	 *
-	 * @param height The height expressed as a <code>Boundheight</code>. E.g. "50:100px:200mm" or "100px".
+	 * @param height The height expressed as a <code>BoundSize</code>. E.g. "50:100px:200mm" or "100px".
 	 * @return <code>this</code> so it is possible to chain calls. E.g. <code>new LayoutConstraint().noGrid().gap().fill()</code>.
 	 */
 	public final LC height(String height)

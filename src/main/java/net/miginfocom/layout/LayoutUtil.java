@@ -57,26 +57,36 @@ import java.util.WeakHashMap;
 public final class LayoutUtil
 {
 	/**
-	 * A substitute value for aa really large value. Integer.MAX_VALUE is not used since that means a lot of defensive code
-	 * for potential overflow must exist in many places. This value is large enough for being unreasonable yet it is hard to
-	 * overflow.
+	 * A substitute value for aa really large value. Integer.MAX_VALUE is not used since that means a lot of defensive code for potential overflow must exist in
+	 * many places. This value is large enough for being unreasonable yet it is hard to overflow.
 	 */
-	static final int INF = (Integer.MAX_VALUE >> 10) - 100; // To reduce likelihood of overflow errors when calculating.
+	public static final int INF = (Integer.MAX_VALUE >> 10) - 100; // To reduce likelihood of overflow errors when calculating.
 
 	/**
 	 * Tag int for a value that in considered "not set". Used as "null" element in int arrays.
 	 */
-	static final int NOT_SET = Integer.MIN_VALUE + 12346;   // Magic value...
+	static final int NOT_SET = Integer.MIN_VALUE + 12346; // Magic value...
 
 	// Index for the different sizes
 	public static final int MIN = 0;
 	public static final int PREF = 1;
 	public static final int MAX = 2;
 
-	private static WeakHashMap<Object, String> CR_MAP = null;
-	private static WeakHashMap<Object, Boolean> DT_MAP = null;      // The Containers that have design time. Value not used.
+	private static volatile WeakHashMap<Object, String> CR_MAP = null;
+	private static volatile WeakHashMap<Object, Boolean> DT_MAP = null; // The Containers that have design time. Value not used.
 	private static int eSz = 0;
 	private static int globalDebugMillis = 0;
+	public static final boolean HAS_BEANS = hasBeans();
+
+	private static boolean hasBeans()
+	{
+		try {
+			LayoutUtil.class.getClassLoader().loadClass("java.beans.Beans");
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
 
 	private LayoutUtil()
 	{
@@ -89,12 +99,11 @@ public final class LayoutUtil
 	 */
 	public static String getVersion()
 	{
-		return "3.7.4";
+		return "4.0";
 	}
 
 	/**
-	 * If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout
-	 * instances.
+	 * If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout instances.
 	 *
 	 * @return The current debug milliseconds.
 	 * @see LC#setDebugMillis(int)
@@ -105,14 +114,11 @@ public final class LayoutUtil
 	}
 
 	/**
-	 * If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout
-	 * instances.
+	 * If global debug should be on or off. If &gt; 0 then debug is turned on for all MigLayout instances.
 	 * <p>
-	 * Note! This is a passive value and will be read by panels when the needed, which is normally
-	 * when they repaint/layout.
+	 * Note! This is a passive value and will be read by panels when the needed, which is normally when they repaint/layout.
 	 *
-	 * @param millis The new debug milliseconds. 0 turns of global debug and leaves debug up to every
-	 *               individual panel.
+	 * @param millis The new debug milliseconds. 0 turns of global debug and leaves debug up to every individual panel.
 	 * @see LC#setDebugMillis(int)
 	 */
 	public static void setGlobalDebugMillis(int millis)
@@ -123,13 +129,11 @@ public final class LayoutUtil
 	/**
 	 * Sets if design time is turned on for a Container in {@link ContainerWrapper}.
 	 *
-	 * @param cw The container to set design time for. <code>null</code> is legal and can be used as
-	 *           a key to turn on/off design time "in general". Note though that design time "in general" is
-	 *           always on as long as there is at least one ContainerWrapper with design time.
+	 * @param cw The container to set design time for. <code>null</code> is legal and can be used as a key to turn on/off design time "in general". Note though
+	 *           that design time "in general" is always on as long as there is at least one ContainerWrapper with design time.
 	 *           <p>
-	 *           <strong>If this method has not ever been called it will default to what
-	 *           <code>Beans.isDesignTime()</code> returns.</strong> This means that if you call
-	 *           this method you indicate that you will take responsibility for the design time value.
+	 *           <strong>If this method has not ever been called it will default to what <code>Beans.isDesignTime()</code> returns.</strong> This means that if you
+	 *           call this method you indicate that you will take responsibility for the design time value.
 	 * @param b  <code>true</code> means design time on.
 	 */
 	public static void setDesignTime(ContainerWrapper cw, boolean b)
@@ -137,27 +141,26 @@ public final class LayoutUtil
 		if (DT_MAP == null)
 			DT_MAP = new WeakHashMap<Object, Boolean>();
 
-		DT_MAP.put((cw != null ? cw.getComponent() : null), new Boolean(b));
+		DT_MAP.put((cw != null ? cw.getComponent() : null), b);
 	}
 
 	/**
 	 * Returns if design time is turned on for a Container in {@link ContainerWrapper}.
 	 *
-	 * @param cw The container to set design time for. <code>null</code> is legal will return <code>true</code>
-	 *           if there is at least one <code>ContainerWrapper</code> (or <code>null</code>) that have design time
-	 *           turned on.
+	 * @param cw The container to set design time for. <code>null</code> is legal will return <code>true</code> if there is at least one
+	 *           <code>ContainerWrapper</code> (or <code>null</code>) that have design time turned on.
 	 * @return If design time is set for <code>cw</code>.
 	 */
 	public static boolean isDesignTime(ContainerWrapper cw)
 	{
 		if (DT_MAP == null)
-			return Beans.isDesignTime();
+			return HAS_BEANS && Beans.isDesignTime();
 
 		if (cw != null && DT_MAP.containsKey(cw.getComponent()) == false)
 			cw = null;
 
 		Boolean b = DT_MAP.get(cw != null ? cw.getComponent() : null);
-		return b != null && b.booleanValue();
+		return b != null && b;
 	}
 
 	/**
@@ -173,9 +176,8 @@ public final class LayoutUtil
 	/**
 	 * The size of an empty row or columns in a grid during design time.
 	 *
-	 * @param pixels The number of pixels. Default is 0 (it was 15 prior to v3.7.2, but since that meant different behaviour
-	 *               under design time by default it was changed to be 0, same as non-design time). IDE vendors can still set it to 15 to
-	 *               get the old behaviour.
+	 * @param pixels The number of pixels. Default is 0 (it was 15 prior to v3.7.2, but since that meant different behaviour under design time by default it was
+	 *               changed to be 0, same as non-design time). IDE vendors can still set it to 15 to get the old behaviour.
 	 */
 	public static void setDesignTimeEmptySize(int pixels)
 	{
@@ -183,9 +185,8 @@ public final class LayoutUtil
 	}
 
 	/**
-	 * Associates <code>con</code> with the creation string <code>s</code>. The <code>con</code> object should
-	 * probably have an equals method that compares identities or <code>con</code> objects that .equals() will only
-	 * be able to have <b>one</b> creation string.
+	 * Associates <code>con</code> with the creation string <code>s</code>. The <code>con</code> object should probably have an equals method that compares
+	 * identities or <code>con</code> objects that .equals() will only be able to have <b>one</b> creation string.
 	 * <p>
 	 * If {@link LayoutUtil#isDesignTime(ContainerWrapper)} returns <code>false</code> the method does nothing.
 	 *
@@ -208,11 +209,11 @@ public final class LayoutUtil
 	 * @param c   The class to set the registered deligate for.
 	 * @param del The new delegate or <code>null</code> to erase to old one.
 	 */
-	static synchronized void setDelegate(Class c, PersistenceDelegate del)
+	static synchronized void setDelegate(Class<?> c, PersistenceDelegate del)
 	{
 		try {
 			Introspector.getBeanInfo(c, Introspector.IGNORE_ALL_BEANINFO).getBeanDescriptor().setValue("persistenceDelegate", del);
-		} catch (Exception e1) {
+		} catch (Exception ignored) {
 		}
 	}
 
@@ -234,22 +235,22 @@ public final class LayoutUtil
 	}
 
 	/**
-	 * Takes a number on min/preferred/max sizes and resize constraints and returns the calculated sizes which sum should add up to <code>bounds</code>. Whether the sum
-	 * will actually equal <code>bounds</code> is dependent om the pref/max sizes and resize constraints.
+	 * Takes a number on min/preferred/max sizes and resize constraints and returns the calculated sizes which sum should add up to <code>bounds</code>. Whether
+	 * the sum will actually equal <code>bounds</code> is dependent om the pref/max sizes and resize constraints.
 	 *
-	 * @param sizes          [ix],[MIN][PREF][MAX]. Grid.CompWrap.NOT_SET will be treated as N/A or 0. A "[MIN][PREF][MAX]" array with null elements will be interpreted as very flexible (no bounds)
-	 *                       but if the array itself is null it will not get any size.
+	 * @param sizes          [ix],[MIN][PREF][MAX]. Grid.CompWrap.NOT_SET will be treated as N/A or 0. A "[MIN][PREF][MAX]" array with null elements will be interpreted as
+	 *                       very flexible (no bounds) but if the array itself is null it will not get any size.
 	 * @param resConstr      Elements can be <code>null</code> and the whole array can be <code>null</code>. <code>null</code> means that the size will not be flexible at all.
 	 *                       Can have length less than <code>sizes</code> in which case the last element should be used for the elements missing.
-	 * @param defPushWeights If there is no grow weight for a resConstr the corresponding value of this array is used.
-	 *                       These forced resConstr will be grown last though and only if needed to fill to the bounds.
-	 * @param startSizeType  The initial size to use. E.g. {@link net.miginfocom.layout.LayoutUtil#MIN}.
+	 * @param defPushWeights If there is no grow weight for a resConstr the corresponding value of this array is used. These forced resConstr will be grown last though and
+	 *                       only if needed to fill to the bounds.
+	 * @param startSizeType  The initial size to use. E.g. {@link LayoutUtil#MIN}.
 	 * @param bounds         To use for relative sizes.
 	 * @return The sizes. Array length will match <code>sizes</code>.
 	 */
 	static int[] calculateSerial(int[][] sizes, ResizeConstraint[] resConstr, Float[] defPushWeights, int startSizeType, int bounds)
 	{
-		float[] lengths = new float[sizes.length];    // heights/widths that are set
+		float[] lengths = new float[sizes.length]; // heights/widths that are set
 		float usedLength = 0.0f;
 
 		// Give all preferred size to start with
@@ -274,18 +275,18 @@ public final class LayoutUtil
 			for (int i = 0; i < sizes.length; i++) {
 				ResizeConstraint resC = (ResizeConstraint) getIndexSafe(resConstr, i);
 				if (resC != null)
-					prioList.add(new Integer(isGrow ? resC.growPrio : resC.shrinkPrio));
+					prioList.add(isGrow ? resC.growPrio : resC.shrinkPrio);
 			}
 			Integer[] prioIntegers = prioList.toArray(new Integer[prioList.size()]);
 
-			for (int force = 0; force <= ((isGrow && defPushWeights != null) ? 1 : 0); force++) {    // Run twice if defGrow and the need for growing.
+			for (int force = 0; force <= ((isGrow && defPushWeights != null) ? 1 : 0); force++) { // Run twice if defGrow and the need for growing.
 				for (int pr = prioIntegers.length - 1; pr >= 0; pr--) {
-					int curPrio = prioIntegers[pr].intValue();
+					int curPrio = prioIntegers[pr];
 
 					float totWeight = 0f;
 					Float[] resizeWeight = new Float[sizes.length];
 					for (int i = 0; i < sizes.length; i++) {
-						if (sizes[i] == null)   // if no min/pref/max size at all do not grow or shrink.
+						if (sizes[i] == null) // if no min/pref/max size at all do not grow or shrink.
 							continue;
 
 						ResizeConstraint resC = (ResizeConstraint) getIndexSafe(resConstr, i);
@@ -299,7 +300,7 @@ public final class LayoutUtil
 									resizeWeight[i] = resC.shrink;
 								}
 								if (resizeWeight[i] != null)
-									totWeight += resizeWeight[i].floatValue();
+									totWeight += resizeWeight[i];
 							}
 						}
 					}
@@ -314,7 +315,7 @@ public final class LayoutUtil
 
 								Float weight = resizeWeight[i];
 								if (weight != null) {
-									float sizeDelta = toChange * weight.floatValue() / totWeight;
+									float sizeDelta = toChange * weight / totWeight;
 									float newSize = lengths[i] + sizeDelta;
 
 									if (sizes[i] != null) {
@@ -322,7 +323,7 @@ public final class LayoutUtil
 										if (newSizeBounded != NOT_SET) {
 											resizeWeight[i] = null;
 											hit = true;
-											changedWeight += weight.floatValue();
+											changedWeight += weight;
 											newSize = newSizeBounded;
 											sizeDelta = newSize - lengths[i];
 										}
@@ -347,30 +348,28 @@ public final class LayoutUtil
 	}
 
 	/**
-	 * Returns the broken boundary if <code>sz</code> is outside the boundaries <code>lower</code> or <code>upper</code>. If both boundaries
-	 * are broken, the lower one is returned. If <code>sz</code> is &lt; 0 then <code>new Float(0f)</code> is returned so that no sizes can be
-	 * negative.
+	 * Returns the broken boundary if <code>sz</code> is outside the boundaries <code>lower</code> or <code>upper</code>. If both boundaries are broken, the lower
+	 * one is returned. If <code>sz</code> is &lt; 0 then <code>new Float(0f)</code> is returned so that no sizes can be negative.
 	 *
 	 * @param sz    The size to check
 	 * @param lower The lower boundary (or <code>null</code> fo no boundary).
 	 * @param upper The upper boundary (or <code>null</code> fo no boundary).
-	 * @return The broken boundary or <code>null</code> if no boundary was broken.
+	 * @return The broken boundary.
 	 */
 	private static int getBrokenBoundary(float sz, int lower, int upper)
 	{
 		if (lower != NOT_SET) {
 			if (sz < lower)
-				return new Integer(lower);
+				return lower;
 		} else if (sz < 0f) {
-			return new Integer(0);
+			return 0;
 		}
 
 		if (upper != NOT_SET && sz > upper)
-			return new Integer(upper);
+			return upper;
 
 		return NOT_SET;
 	}
-
 
 	static int sum(int[] terms, int start, int len)
 	{
@@ -397,26 +396,20 @@ public final class LayoutUtil
 		if (bs == null || bs.isUnset())
 			return new BoundSize(min, pref, max, null);
 
-		return new BoundSize(
-				min != null ? min : bs.getMin(),
-				pref != null ? pref : bs.getPreferred(),
-				max != null ? max : bs.getMax(),
-				bs.getGapPush(),
-				null);
+		return new BoundSize(min != null ? min : bs.getMin(), pref != null ? pref : bs.getPreferred(), max != null ? max : bs.getMax(), bs.getGapPush(), null);
 	}
 
 	/**
-	 * Returns if left-to-right orientation is used. If not set explicitly in the layout constraints the Locale
-	 * of the <code>parent</code> is used.
+	 * Returns if left-to-right orientation is used. If not set explicitly in the layout constraints the Locale of the <code>parent</code> is used.
 	 *
 	 * @param lc        The constraint if there is one. Can be <code>null</code>.
 	 * @param container The parent that may be used to get the left-to-right if ffc does not specify this.
 	 * @return If left-to-right orientation is currently used.
 	 */
-	public final static boolean isLeftToRight(LC lc, ContainerWrapper container)
+	public static boolean isLeftToRight(LC lc, ContainerWrapper container)
 	{
 		if (lc != null && lc.getLeftToRight() != null)
-			return lc.getLeftToRight().booleanValue();
+			return lc.getLeftToRight();
 
 		return container == null || container.isLeftToRight();
 	}
@@ -450,35 +443,34 @@ public final class LayoutUtil
 	 * @param o2 The second object. May be <code>null</code>.
 	 * @return Returns <code>true</code> if <code>o1</code> and <code>o2</code> are equal (using .equals()) or both are <code>null</code>.
 	 */
-	static final boolean equals(Object o1, Object o2)
+	static boolean equals(Object o1, Object o2)
 	{
 		return o1 == o2 || (o1 != null && o2 != null && o1.equals(o2));
 	}
 
-//	static int getBaselineCorrect(Component comp)
-//	{
-//		Dimension pSize = comp.getPreferredSize();
-//		int baseline = comp.getBaseline(pSize.width, pSize.height);
-//		int nextBaseline = comp.getBaseline(pSize.width, pSize.height + 1);
-//
-//		// Amount to add to height when calculating where baseline
-//		// lands for a particular height:
-//		int padding = 0;
-//
-//		// Where the baseline is relative to the mid point
-//		int baselineOffset = baseline - pSize.height / 2;
-//		if (pSize.height % 2 == 0 && baseline != nextBaseline) {
-//			padding = 1;
-//		} else if (pSize.height % 2 == 1 && baseline == nextBaseline) {
-//			baselineOffset--;
-//			padding = 1;
-//		}
-//
-//		// The following calculates where the baseline lands for
-//		// the height z:
-//		return (pSize.height + padding) / 2 + baselineOffset;
-//	}
-
+	// static int getBaselineCorrect(Component comp)
+	// {
+	// Dimension pSize = comp.getPreferredSize();
+	// int baseline = comp.getBaseline(pSize.width, pSize.height);
+	// int nextBaseline = comp.getBaseline(pSize.width, pSize.height + 1);
+	//
+	// // Amount to add to height when calculating where baseline
+	// // lands for a particular height:
+	// int padding = 0;
+	//
+	// // Where the baseline is relative to the mid point
+	// int baselineOffset = baseline - pSize.height / 2;
+	// if (pSize.height % 2 == 0 && baseline != nextBaseline) {
+	// padding = 1;
+	// } else if (pSize.height % 2 == 1 && baseline == nextBaseline) {
+	// baselineOffset--;
+	// padding = 1;
+	// }
+	//
+	// // The following calculates where the baseline lands for
+	// // the height z:
+	// return (pSize.height + padding) / 2 + baselineOffset;
+	// }
 
 	/**
 	 * Returns the inset for the side.
@@ -487,7 +479,7 @@ public final class LayoutUtil
 	 * @param getDefault If <code>true</code> the default insets will get retrieved if <code>lc</code> has none set.
 	 * @return The inset for the side. Never <code>null</code>.
 	 */
-	static final UnitValue getInsets(LC lc, int side, boolean getDefault)
+	static UnitValue getInsets(LC lc, int side, boolean getDefault)
 	{
 		UnitValue[] i = lc.getInsets();
 		return (i != null && i[side] != null) ? i[side] : (getDefault ? PlatformDefaults.getPanelInsets(side) : UnitValue.ZERO);
@@ -511,7 +503,7 @@ public final class LayoutUtil
 			encoder.setExceptionListener(listener);
 
 		encoder.writeObject(o);
-		encoder.close();    // Must be closed to write.
+		encoder.close(); // Must be closed to write.
 
 		Thread.currentThread().setContextClassLoader(oldClassLoader);
 	}
@@ -565,7 +557,7 @@ public final class LayoutUtil
 		try {
 			oldCL = cThread.getContextClassLoader();
 			cThread.setContextClassLoader(LayoutUtil.class.getClassLoader());
-		} catch (SecurityException e) {
+		} catch (SecurityException ignored) {
 		}
 
 		Object o = null;
@@ -576,9 +568,11 @@ public final class LayoutUtil
 
 			in.readFully(readBuf, 0, length);
 
-			o = new XMLDecoder(new ByteArrayInputStream(readBuf, 0, length)).readObject();
+			try (XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(readBuf, 0, length))) {
+				o = decoder.readObject();
+			}
 
-		} catch (EOFException e) {
+		} catch (EOFException ignored) {
 		}
 
 		if (oldCL != null)

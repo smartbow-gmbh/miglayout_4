@@ -192,7 +192,7 @@ public class IDEUtil
 	 * @param isCols The the constraint should be returned for columns rather than rows.
 	 * @return A String. Never <code>null</code>.
 	 */
-	public static final String getConstraintString(AC ac, boolean asAPI, boolean isCols)
+	public static String getConstraintString(AC ac, boolean asAPI, boolean isCols)
 	{
 		StringBuffer sb = new StringBuffer(32);
 
@@ -234,7 +234,7 @@ public class IDEUtil
 	 * @param asAPI If the returned string should be of API type (e.g. .flowX().gap("rel").align("right")) or
 	 *              as a String type (e.g. "flowx, gap rel, right").
 	 */
-	private static final void addRowDimConstraintString(DimConstraint dc, StringBuffer sb, boolean asAPI)
+	private static void addRowDimConstraintString(DimConstraint dc, StringBuffer sb, boolean asAPI)
 	{
 		int gp = dc.getGrowPriority();
 
@@ -259,7 +259,7 @@ public class IDEUtil
 
 		Float gw = dc.getGrow();
 		if (gw != null) {
-			String g = gw.floatValue() != 100f ? floatToString(gw.floatValue(), asAPI) : "";
+			String g = gw != 100f ? floatToString(gw, asAPI) : "";
 			if (asAPI) {
 				if (g.length() == 0) {
 					sb.append(".grow()");
@@ -282,7 +282,7 @@ public class IDEUtil
 
 		Float sw = dc.getShrink();
 		if (sw != null && sw.intValue() != 100) {
-			String s = floatToString(sw.floatValue(), asAPI);
+			String s = floatToString(sw, asAPI);
 			if (asAPI) {
 				sb.append(".shrink(\"").append(s).append("\")");
 			} else {
@@ -357,7 +357,7 @@ public class IDEUtil
 	 * @param noGrowAdd If <code>true</code> no grow constraints will be added.
 	 * @return A constraint string. Never <code>null</code>.
 	 */
-	private static final void addComponentDimConstraintString(DimConstraint dc, StringBuffer sb, boolean asAPI, boolean isHor, boolean noGrowAdd)
+	private static void addComponentDimConstraintString(DimConstraint dc, StringBuffer sb, boolean asAPI, boolean isHor, boolean noGrowAdd)
 	{
 		int gp = dc.getGrowPriority();
 		if (gp != 100) {
@@ -371,7 +371,7 @@ public class IDEUtil
 		if (noGrowAdd == false) {
 			Float gw = dc.getGrow();
 			if (gw != null) {
-				String g = gw.floatValue() != 100f ? floatToString(gw.floatValue(), asAPI) : "";
+				String g = gw != 100f ? floatToString(gw, asAPI) : "";
 				if (asAPI) {
 					sb.append(isHor ? ".growX(" : ".growY(").append(g).append(')');
 				} else {
@@ -391,7 +391,7 @@ public class IDEUtil
 
 		Float sw = dc.getShrink();
 		if (sw != null && sw.intValue() != 100) {
-			String s = floatToString(sw.floatValue(), asAPI);
+			String s = floatToString(sw, asAPI);
 			if (asAPI) {
 				sb.append(isHor ? ".shrinkX(" : ".shrinkY(").append(s).append(')');
 			} else {
@@ -483,7 +483,7 @@ public class IDEUtil
 	 *              as a String type (e.g. "flowx, gap rel, right").
 	 * @return A String. Never <code>null</code>.
 	 */
-	public static final String getConstraintString(CC cc, boolean asAPI)
+	public static String getConstraintString(CC cc, boolean asAPI)
 	{
 		StringBuffer sb = new StringBuffer(16);
 
@@ -496,9 +496,9 @@ public class IDEUtil
 		Boolean flowX = cc.getFlowX();
 		if (flowX != null) {
 			if (asAPI) {
-				sb.append(flowX.booleanValue() ? ".flowX()" : ".flowY()");
+				sb.append(flowX ? ".flowX()" : ".flowY()");
 			} else {
-				sb.append(flowX.booleanValue() ? ",flowx" : ",flowy");
+				sb.append(flowX ? ",flowx" : ",flowy");
 			}
 		}
 
@@ -555,9 +555,9 @@ public class IDEUtil
 		int hideMode = cc.getHideMode();
 		if (hideMode >= 0) {
 			if (asAPI) {
-				sb.append(".hideMode(").append(hideMode).append(')');
+				sb.append(".hidemode(").append(hideMode).append(')');
 			} else {
-				sb.append(",hideMode ").append(hideMode);
+				sb.append(",hidemode ").append(hideMode);
 			}
 		}
 
@@ -656,7 +656,7 @@ public class IDEUtil
 	 *              as a String type (e.g. "flowx, gap rel, right").
 	 * @return A String. Never <code>null</code>.
 	 */
-	public static final String getConstraintString(LC lc, boolean asAPI)
+	public static String getConstraintString(LC lc, boolean asAPI)
 	{
 		StringBuffer sb = new StringBuffer(16);
 
@@ -678,7 +678,7 @@ public class IDEUtil
 			if (asAPI) {
 				sb.append(".leftToRight(").append(leftToRight).append(')');
 			} else {
-				sb.append(leftToRight.booleanValue() ? ",ltr" : ",rtl");
+				sb.append(leftToRight ? ",ltr" : ",rtl");
 			}
 		}
 
@@ -814,7 +814,7 @@ public class IDEUtil
 	 * @param f the float.
 	 * @return <code>f</code> as a string. Never <code>null</code>.
 	 */
-	private static final String floatToString(float f, boolean asAPI)
+	private static String floatToString(float f, boolean asAPI)
 	{
 		String valS = String.valueOf(f);
 		return valS.endsWith(".0") ? valS.substring(0, valS.length() - 2) : (valS + (asAPI ? "f" : ""));

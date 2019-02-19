@@ -75,12 +75,9 @@ public class SwingComponentWrapper implements ComponentWrapper
 			return -1;
 
 		try {
-			Object[] args = new Object[] {
-					new Integer(width < 0 ? c.getWidth() : width),
-					new Integer(height < 0 ? c.getHeight() : height)
-			};
+			Object[] args = new Object[] {width < 0 ? c.getWidth() : width, height < 0 ? c.getHeight() : height};
 
-			return ((Integer) BL_METHOD.invoke(c, args)).intValue();
+			return (Integer) BL_METHOD.invoke(c, args);
 		} catch (Exception e) {
 			return -1;
 		}
@@ -115,7 +112,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 
 				Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 				if (s != null)
-					return s.floatValue();
+					return s;
 				return (isHor ? getHorizontalScreenDPI() : getVerticalScreenDPI()) / (float) PlatformDefaults.getDefaultDPI();
 
 			default:
@@ -123,26 +120,27 @@ public class SwingComponentWrapper implements ComponentWrapper
 		}
 	}
 
-//	/** Cache.
-//	 */
-//	private final static IdentityHashMap<FontMetrics, Point.Float> FM_MAP2 = new IdentityHashMap<FontMetrics, Point.Float>(4);
-//	private final static Font SUBST_FONT2 = new Font("sansserif", Font.PLAIN, 11);
-//
-//	public float getDialogUnit(boolean isHor)
-//	{
-//		Font font = c.getFont();
-//		FontMetrics fm = c.getFontMetrics(font != null ? font : SUBST_FONT2);
-//		Point.Float dluP = FM_MAP2.get(fm);
-//		if (dluP == null) {
-//			float w = fm.charWidth('X') / 4f;
-//			int ascent = fm.getAscent();
-//			float h = (ascent > 14 ? ascent : ascent + (15 - ascent) / 3) / 8f;
-//
-//			dluP = new Point.Float(w, h);
-//			FM_MAP2.put(fm, dluP);
-//		}
-//		return isHor ? dluP.x : dluP.y;
-//	}
+	// /** Cache.
+	// */
+	// private final static IdentityHashMap<FontMetrics, Point.Float> FM_MAP2 = new IdentityHashMap<FontMetrics,
+	// Point.Float>(4);
+	// private final static Font SUBST_FONT2 = new Font("sansserif", Font.PLAIN, 11);
+	//
+	// public float getDialogUnit(boolean isHor)
+	// {
+	// Font font = c.getFont();
+	// FontMetrics fm = c.getFontMetrics(font != null ? font : SUBST_FONT2);
+	// Point.Float dluP = FM_MAP2.get(fm);
+	// if (dluP == null) {
+	// float w = fm.charWidth('X') / 4f;
+	// int ascent = fm.getAscent();
+	// float h = (ascent > 14 ? ascent : ascent + (15 - ascent) / 3) / 8f;
+	//
+	// dluP = new Point.Float(w, h);
+	// FM_MAP2.put(fm, dluP);
+	// }
+	// return isHor ? dluP.x : dluP.y;
+	// }
 
 	public final int getX()
 	{
@@ -181,7 +179,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMinimumHeight(int sz)
 	{
 		if (prefCalled == false) {
-			c.getPreferredSize(); // To defeat a bug where the minimum size is different before and after the first call to getPreferredSize();
+			c.getPreferredSize(); // To defeat a bug where the minimum size is different before and after the first call to
+			// getPreferredSize();
 			prefCalled = true;
 		}
 		return c.getMinimumSize().height;
@@ -190,7 +189,8 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMinimumWidth(int sz)
 	{
 		if (prefCalled == false) {
-			c.getPreferredSize(); // To defeat a bug where the minimum size is different before and after the first call to getPreferredSize();
+			c.getPreferredSize(); // To defeat a bug where the minimum size is different before and after the first call to
+			// getPreferredSize();
 			prefCalled = true;
 		}
 		return c.getMinimumSize().width;
@@ -217,7 +217,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMaximumHeight(int sz)
 	{
 		if (!isMaxSet(c))
-			return Short.MAX_VALUE;
+			return Integer.MAX_VALUE;
 
 		return c.getMaximumSize().height;
 	}
@@ -225,19 +225,18 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public final int getMaximumWidth(int sz)
 	{
 		if (!isMaxSet(c))
-			return Short.MAX_VALUE;
+			return Integer.MAX_VALUE;
 
 		return c.getMaximumSize().width;
 	}
-
 
 	private boolean isMaxSet(Component c)
 	{
 		if (IMS_METHOD != null) {
 			try {
-				return ((Boolean) IMS_METHOD.invoke(c, (Object[]) null)).booleanValue();
+				return (Boolean) IMS_METHOD.invoke(c, (Object[]) null);
 			} catch (Exception e) {
-				IMS_METHOD = null;  // So we do not try every time.
+				IMS_METHOD = null; // So we do not try every time.
 			}
 		}
 		return isMaxSizeSetOn1_4();
@@ -285,13 +284,13 @@ public class SwingComponentWrapper implements ComponentWrapper
 					bl = Boolean.FALSE;
 				} else {
 					Dimension d = c.getMinimumSize();
-					bl = new Boolean(getBaseline(d.width, d.height) > -1);
+					bl = getBaseline(d.width, d.height) > -1;
 				}
 			} catch (Throwable ex) {
 				bl = Boolean.FALSE;
 			}
 		}
-		return bl.booleanValue();
+		return bl;
 	}
 
 	public final String getLinkId()
@@ -364,26 +363,22 @@ public class SwingComponentWrapper implements ComponentWrapper
 	public int getLayoutHashCode()
 	{
 		Dimension d = c.getMaximumSize();
-		int h = d.width + (d.height << 5);
+		int hash = d.width + (d.height << 5);
 
 		d = c.getPreferredSize();
-		h += (d.width << 10) + (d.height << 15);
+		hash += (d.width << 10) + (d.height << 15);
 
 		d = c.getMinimumSize();
-		h += (d.width << 20) + (d.height << 25);
+		hash += (d.width << 20) + (d.height << 25);
 
 		if (c.isVisible())
-			h += 1324511;
+			hash += 1324511;
 
 		String id = getLinkId();
 		if (id != null)
-			h += id.hashCode();
-		return h;
+			hash += id.hashCode();
 
-		// Since 2.3 will check the isValid instead everything that affects that can be removed from the layout hashcode.
-
-//		String id = getLinkId();
-//		return id != null ? id.hashCode() : 1;
+		return hash;
 	}
 
 	private int checkType(boolean disregardScrollPane)
@@ -428,7 +423,7 @@ public class SwingComponentWrapper implements ComponentWrapper
 			return TYPE_SCROLL_PANE;
 		} else if (c instanceof JScrollBar || c instanceof Scrollbar) {
 			return TYPE_SCROLL_BAR;
-		} else if (c instanceof Container) {    // only AWT components is not containers.
+		} else if (c instanceof Container) { // only AWT components is not containers.
 			return TYPE_CONTAINER;
 		}
 		return TYPE_UNKNOWN;
@@ -456,7 +451,9 @@ public class SwingComponentWrapper implements ComponentWrapper
 	static {
 		try {
 			BL_METHOD = Component.class.getDeclaredMethod("getBaseline", new Class[] {int.class, int.class});
-			BL_RES_METHOD = Component.class.getDeclaredMethod("getBaselineResizeBehavior"); // 3.7.2: Removed Class<?> null since that made the method inaccessible.
+			BL_RES_METHOD = Component.class.getDeclaredMethod("getBaselineResizeBehavior"); // 3.7.2: Removed Class<?> null
+			// since that made the method
+			// inaccessible.
 		} catch (Throwable e) { // No such method or security exception
 		}
 	}

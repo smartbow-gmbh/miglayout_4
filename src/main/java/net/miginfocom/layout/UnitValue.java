@@ -220,25 +220,25 @@ public final class UnitValue implements Serializable
 	private static final int IDENTITY = -1;
 
 	static {
-		UNIT_MAP.put("px", new Integer(PIXEL));
-		UNIT_MAP.put("lpx", new Integer(LPX));
-		UNIT_MAP.put("lpy", new Integer(LPY));
-		UNIT_MAP.put("%", new Integer(PERCENT));
-		UNIT_MAP.put("cm", new Integer(CM));
-		UNIT_MAP.put("in", new Integer(INCH));
-		UNIT_MAP.put("spx", new Integer(SPX));
-		UNIT_MAP.put("spy", new Integer(SPY));
-		UNIT_MAP.put("al", new Integer(ALIGN));
-		UNIT_MAP.put("mm", new Integer(MM));
-		UNIT_MAP.put("pt", new Integer(PT));
-		UNIT_MAP.put("min", new Integer(MIN_SIZE));
-		UNIT_MAP.put("minimum", new Integer(MIN_SIZE));
-		UNIT_MAP.put("p", new Integer(PREF_SIZE));
-		UNIT_MAP.put("pref", new Integer(PREF_SIZE));
-		UNIT_MAP.put("max", new Integer(MAX_SIZE));
-		UNIT_MAP.put("maximum", new Integer(MAX_SIZE));
-		UNIT_MAP.put("button", new Integer(BUTTON));
-		UNIT_MAP.put("label", new Integer(LABEL_ALIGN));
+		UNIT_MAP.put("px", PIXEL);
+		UNIT_MAP.put("lpx", LPX);
+		UNIT_MAP.put("lpy", LPY);
+		UNIT_MAP.put("%", PERCENT);
+		UNIT_MAP.put("cm", CM);
+		UNIT_MAP.put("in", INCH);
+		UNIT_MAP.put("spx", SPX);
+		UNIT_MAP.put("spy", SPY);
+		UNIT_MAP.put("al", ALIGN);
+		UNIT_MAP.put("mm", MM);
+		UNIT_MAP.put("pt", PT);
+		UNIT_MAP.put("min", MIN_SIZE);
+		UNIT_MAP.put("minimum", MIN_SIZE);
+		UNIT_MAP.put("p", PREF_SIZE);
+		UNIT_MAP.put("pref", PREF_SIZE);
+		UNIT_MAP.put("max", MAX_SIZE);
+		UNIT_MAP.put("maximum", MAX_SIZE);
+		UNIT_MAP.put("button", BUTTON);
+		UNIT_MAP.put("label", LABEL_ALIGN);
 	}
 
 	static final UnitValue ZERO = new UnitValue(0, null, PIXEL, true, STATIC, null, null, "0px");
@@ -352,7 +352,7 @@ public final class UnitValue implements Serializable
 					float f = SCALE[unit - MM];
 					Float s = isHor ? PlatformDefaults.getHorizontalScaleFactor() : PlatformDefaults.getVerticalScaleFactor();
 					if (s != null)
-						f *= s.floatValue();
+						f *= s;
 					return (isHor ? parent.getHorizontalScreenDPI() : parent.getVerticalScreenDPI()) * value / f;
 
 				case PERCENT:
@@ -367,7 +367,7 @@ public final class UnitValue implements Serializable
 					Integer sz = LinkHandler.getValue(parent.getLayout(), "visual", isHor ? LinkHandler.WIDTH : LinkHandler.HEIGHT);
 					if (st == null || sz == null)
 						return 0;
-					return value * (Math.max(0, sz.intValue()) - refValue) + st.intValue();
+					return value * (Math.max(0, sz.intValue()) - refValue) + st;
 
 				case MIN_SIZE:
 					if (comp == null)
@@ -400,11 +400,11 @@ public final class UnitValue implements Serializable
 						return 0;
 
 					if (unit == LINK_XPOS)
-						return parent.getScreenLocationX() + v.intValue();
+						return parent.getScreenLocationX() + v;
 					if (unit == LINK_YPOS)
-						return parent.getScreenLocationY() + v.intValue();
+						return parent.getScreenLocationY() + v;
 
-					return v.intValue();
+					return v;
 
 				case LOOKUP:
 					float res = lookup(refValue, parent, comp);
@@ -462,7 +462,7 @@ public final class UnitValue implements Serializable
 
 		Integer u = UNIT_MAP.get(unitStr);
 		if (u != null)
-			return u.intValue();
+			return u;
 
 		if (unitStr.equals("lp"))
 			return isHor ? LPX : LPY;
@@ -511,8 +511,8 @@ public final class UnitValue implements Serializable
 		if (subUnits == null)
 			return linkId != null;
 
-		for (int i = 0; i < subUnits.length; i++) {
-			if (subUnits[i].isLinkedDeep())
+		for (UnitValue subUnit : subUnits) {
+			if (subUnit.isLinkedDeep())
 				return true;
 		}
 
@@ -536,7 +536,7 @@ public final class UnitValue implements Serializable
 
 	public final UnitValue[] getSubUnits()
 	{
-		return subUnits;
+		return subUnits != null ? subUnits.clone() : null;
 	}
 
 	public final int getUnit()
@@ -593,7 +593,7 @@ public final class UnitValue implements Serializable
 	 *
 	 * @param conv The converter. Not <code>null</code>.
 	 */
-	public final synchronized static void addGlobalUnitConverter(UnitConverter conv)
+	public synchronized static void addGlobalUnitConverter(UnitConverter conv)
 	{
 		if (conv == null)
 			throw new NullPointerException();
@@ -606,7 +606,7 @@ public final class UnitValue implements Serializable
 	 * @param unit The converter.
 	 * @return If there was a converter found and thus removed.
 	 */
-	public final synchronized static boolean removeGlobalUnitConverter(String unit)
+	public synchronized static boolean removeGlobalUnitConverter(UnitConverter unit)
 	{
 		return CONVERTERS.remove(unit);
 	}
@@ -616,7 +616,7 @@ public final class UnitValue implements Serializable
 	 *
 	 * @return The converters. Never <code>null</code>.
 	 */
-	public final synchronized static UnitConverter[] getGlobalUnitConverters()
+	public synchronized static UnitConverter[] getGlobalUnitConverters()
 	{
 		return CONVERTERS.toArray(new UnitConverter[CONVERTERS.size()]);
 	}
@@ -629,7 +629,7 @@ public final class UnitValue implements Serializable
 	 * @see #LPX
 	 * @deprecated Use {@link PlatformDefaults#getDefaultHorizontalUnit()} and {@link PlatformDefaults#getDefaultVerticalUnit()} instead.
 	 */
-	public final static int getDefaultUnit()
+	public static int getDefaultUnit()
 	{
 		return PlatformDefaults.getDefaultHorizontalUnit();
 	}
@@ -642,27 +642,29 @@ public final class UnitValue implements Serializable
 	 * @see #LPX
 	 * @deprecated Use {@link PlatformDefaults#setDefaultHorizontalUnit(int)} and {@link PlatformDefaults#setDefaultVerticalUnit(int)} instead.
 	 */
-	public final static void setDefaultUnit(int unit)
+	public static void setDefaultUnit(int unit)
 	{
 		PlatformDefaults.setDefaultHorizontalUnit(unit);
 		PlatformDefaults.setDefaultVerticalUnit(unit);
 	}
 
 	static {
-		LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate()
-		{
-			protected Expression instantiate(Object oldInstance, Encoder out)
+		if (LayoutUtil.HAS_BEANS) {
+			LayoutUtil.setDelegate(UnitValue.class, new PersistenceDelegate()
 			{
-				UnitValue uv = (UnitValue) oldInstance;
-				String cs = uv.getConstraintString();
-				if (cs == null)
-					throw new IllegalStateException("Design time must be on to use XML persistence. See LayoutUtil.");
+				protected Expression instantiate(Object oldInstance, Encoder out)
+				{
+					UnitValue uv = (UnitValue) oldInstance;
+					String cs = uv.getConstraintString();
+					if (cs == null)
+						throw new IllegalStateException("Design time must be on to use XML persistence. See LayoutUtil.");
 
-				return new Expression(oldInstance, ConstraintParser.class, "parseUnitValueOrAlign", new Object[] {
-						uv.getConstraintString(), (uv.isHorizontal() ? Boolean.TRUE : Boolean.FALSE), null
-				});
-			}
-		});
+					return new Expression(oldInstance, ConstraintParser.class, "parseUnitValueOrAlign", new Object[] {
+							uv.getConstraintString(), (uv.isHorizontal() ? Boolean.TRUE : Boolean.FALSE), null
+					});
+				}
+			});
+		}
 	}
 
 	// ************************************************

@@ -83,8 +83,7 @@ public final class ConstraintParser
 			}
 		}
 
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
+		for (String part : parts) {
 			if (part == null || part.length() == 0)
 				continue;
 
@@ -231,7 +230,8 @@ public final class ConstraintParser
 					if (ix > -1) {
 						String[] gaps = toTrimmedTokens(part.substring(ix).trim(), ' ');
 						lc.setAlignX(parseUnitValueOrAlign(gaps[0], true, null));
-						lc.setAlignY(gaps.length > 1 ? parseUnitValueOrAlign(gaps[1], false, null) : lc.getAlignX());
+						if (gaps.length > 1)
+							lc.setAlignY(parseUnitValueOrAlign(gaps[1], false, null));
 						continue;
 					}
 				}
@@ -286,8 +286,8 @@ public final class ConstraintParser
 	 * Parses the column or rows constraints. They normally looks something like <code>"[min:pref]rel[10px][]"</code>.
 	 *
 	 * @param s The string to parse. Not <code>null</code>.
-	 * @return An array of {@link DimConstraint}s that is as manu are there exist "[...]" sections in the string that is parsed.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @return An array of {@link DimConstraint}s that is as many are there exist "[...]" sections in the string that is parsed.
+	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	public static AC parseRowConstraints(String s)
 	{
@@ -298,8 +298,8 @@ public final class ConstraintParser
 	 * Parses the column or rows constraints. They normally looks something like <code>"[min:pref]rel[10px][]"</code>.
 	 *
 	 * @param s The string to parse. Not <code>null</code>.
-	 * @return An array of {@link DimConstraint}s that is as manu are there exist "[...]" sections in the string that is parsed.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @return An array of {@link DimConstraint}s that is as many are there exist "[...]" sections in the string that is parsed.
+	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	public static AC parseColumnConstraints(String s)
 	{
@@ -311,8 +311,8 @@ public final class ConstraintParser
 	 *
 	 * @param s      The string to parse. Not <code>null</code>.
 	 * @param isCols If this for columns rather than rows.
-	 * @return An array of {@link DimConstraint}s that is as manu are there exist "[...]" sections in the string that is parsed.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @return An array of {@link DimConstraint}s that is as many are there exist "[...]" sections in the string that is parsed.
+	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	private static AC parseAxisConstraint(String s, boolean isCols)
 	{
@@ -346,15 +346,15 @@ public final class ConstraintParser
 	}
 
 	/**
-	 * Parses a single column or row constriant.
+	 * Parses a single column or row constraint.
 	 *
-	 * @param s         The single constrint to parse. May look something like <code>"min:pref,fill,grow"</code>. Should not be <code>null</code> and <b>must
+	 * @param s         The single constraint to parse. May look something like <code>"min:pref,fill,grow"</code>. Should not be <code>null</code> and <b>must
 	 *                  be lower case and trimmed</b>.
 	 * @param gapBefore The default gap "before" the column/row constraint. Can be overridden with a <code>"gap"</code> section within <code>s</code>.
 	 * @param gapAfter  The default gap "after" the column/row constraint. Can be overridden with a <code>"gap"</code> section within <code>s</code>.
 	 * @param isCols    If the constraints are column constraints rather than row constraints.
 	 * @return A single constraint. Never <code>null</code>.
-	 * @throws RuntimeException if the constaint was not valid.
+	 * @throws RuntimeException if the constraint was not valid.
 	 */
 	private static DimConstraint parseDimConstraint(String s, BoundSize gapBefore, BoundSize gapAfter, boolean isCols)
 	{
@@ -480,8 +480,7 @@ public final class ConstraintParser
 
 		String[] parts = toTrimmedTokens(s, ',');
 
-		for (int i = 0; i < parts.length; i++) {
-			String part = parts[i];
+		for (String part : parts) {
 			try {
 				if (part.length() == 0)
 					continue;
@@ -808,7 +807,6 @@ public final class ConstraintParser
 
 					if (part.equals("west")) {
 						cc.setDockSide(1);
-//						cc.getVertical().setGrow(ResizeConstraint.WEIGHT_100);
 						continue;
 					}
 
@@ -830,7 +828,6 @@ public final class ConstraintParser
 				if (c == 'e') {
 					if (part.equals("east")) {
 						cc.setDockSide(3);
-//						cc.getVertical().setGrow(ResizeConstraint.WEIGHT_100);
 						continue;
 					}
 
@@ -868,10 +865,10 @@ public final class ConstraintParser
 					}
 
 					if (part.equals("dock center")) {
-						cc.getHorizontal().setGrow(new Float(100f));
-						cc.getVertical().setGrow(new Float(100f));
-						cc.setPushX(new Float(100f));
-						cc.setPushY(new Float(100f));
+						cc.getHorizontal().setGrow(100f);
+						cc.getVertical().setGrow(100f);
+						cc.setPushX(100f);
+						cc.setPushY(100f);
 						continue;
 					}
 				}
@@ -1177,7 +1174,7 @@ public final class ConstraintParser
 	}
 
 	/**
-	 * Parses alignment keywords and returns the approprieate <code>UnitValue</code>.
+	 * Parses alignment keywords and returns the appropriate <code>UnitValue</code>.
 	 *
 	 * @param s     The string to parse. Not <code>null</code>.
 	 * @param isHor If alignments for horizontal is checked. <code>false</code> means vertical.
@@ -1222,7 +1219,7 @@ public final class ConstraintParser
 	/**
 	 * Splits a text-number combination such as "hello 10.0" into <code>{"hello", "10.0"}</code>.
 	 *
-	 * @param s The string to split. Not <code>null</code>. Needs be be resonably formatted since the method
+	 * @param s The string to split. Not <code>null</code>. Needs be be reasonably formatted since the method
 	 *          only finds the first 0-9 or . and cuts the string in half there.
 	 * @return Always length 2 and no <code>null</code> elements. Elements are "" if no part found.
 	 */
@@ -1291,14 +1288,14 @@ public final class ConstraintParser
 	/**
 	 * Returns if a string shares at least a specified numbers starting characters with a number of matches.
 	 * <p>
-	 * This method just excercises {@link #startsWithLenient(String, String, int, boolean)} with every one of
+	 * This method just exercise {@link #startsWithLenient(String, String, int, boolean)} with every one of
 	 * <code>matches</code> and <code>minChars</code>.
 	 *
 	 * @param s              The string to check. Not <code>null</code>.
 	 * @param matches        A number of possible starts for <code>s</code>.
-	 * @param minChars       The mimimum number of characters to match for every element in <code>matches</code>. Needs
+	 * @param minChars       The minimum number of characters to match for every element in <code>matches</code>. Needs
 	 *                       to be of same length as <code>matches</code>. Can be <code>null</code>.
-	 * @param acceptTrailing If after the required number of charecters are matched onrecognized characters that are not
+	 * @param acceptTrailing If after the required number of characters are matched on recognized characters that are not
 	 *                       in one of the the <code>matches</code> string should be accepted. For instance if "abczz" should be matched with
 	 *                       "abcdef" and min chars 3.
 	 * @return The index of the first unmatched character if <code>minChars</code> was reached or <code>-1</code> if a match was not
@@ -1349,7 +1346,6 @@ public final class ConstraintParser
 			if (sIx >= sSz || s.charAt(sIx) != match.charAt(mIx))
 				return mIx >= minChars && (acceptTrailing || sIx >= sSz) && (sIx >= sSz || s.charAt(sIx - 1) == ' ') ? sIx : -1;
 		}
-//		return (sIx >= sSz || acceptTrailing) && (sIx >= sSz || s.charAt(sIx) == ' ') ? sIx : -1;
 		return sIx >= sSz || acceptTrailing || s.charAt(sIx) == ' ' ? sIx : -1;
 	}
 
@@ -1420,18 +1416,18 @@ public final class ConstraintParser
 	 * Parses "AAA[BBB]CCC[DDD]EEE" into {"AAA", "BBB", "CCC", "DDD", "EEE", "FFF"}. Handles empty parts. Will always start and end outside
 	 * a [] block so that the number of returned elemets will always be uneven and at least of length 3.
 	 * <p>
-	 * "|" is interprated as "][".
+	 * "|" is interpreted as "][".
 	 *
 	 * @param s The string. Might be "" but not null. Should be trimmed.
 	 * @return The string divided into elements. Never <code>null</code> and at least of length 3.
 	 * @throws IllegalArgumentException If a [] mismatch of some kind. (If not same [ as ] count or if the interleave.)
 	 */
-	private final static ArrayList<String> getRowColAndGapsTrimmed(String s)
+	private static ArrayList<String> getRowColAndGapsTrimmed(String s)
 	{
 		if (s.indexOf('|') != -1)
 			s = s.replaceAll("\\|", "][");
 
-		ArrayList<String> retList = new ArrayList<String>(Math.max(s.length() >> 2 + 1, 3)); // Aprox return length.
+		ArrayList<String> retList = new ArrayList<String>(Math.max(s.length() >> 2 + 1, 3)); // Approx return length.
 		int s0 = 0, s1 = 0; // '[' and ']' count.
 		int st = 0; // Start of "next token to add".
 		for (int i = 0, iSz = s.length(); i < iSz; i++) {
@@ -1465,12 +1461,12 @@ public final class ConstraintParser
 	}
 
 	/**
-	 * Makes <code>null</code> "", trimms and converts to lower case.
+	 * Makes <code>null</code> "", trims and converts to lower case.
 	 *
 	 * @param s The string
 	 * @return Not null.
 	 */
-	public static final String prepare(String s)
+	public static String prepare(String s)
 	{
 		return s != null ? s.trim().toLowerCase() : "";
 	}

@@ -1,12 +1,33 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'biz.aQute.bnd:biz.aQute.bnd.gradle:4.3.0'
+  }
+}
+
 plugins {
     id "base"
+    id "maven"
+    id "signing"
 }
 
 apply plugin: 'idea'
 apply plugin: 'java'
+apply plugin: 'biz.aQute.bnd.builder'
 
+group "com.smartbow"
 archivesBaseName = "miglayout"
-version = "4.0.10"
+version = "$nextReleaseVersion${isSnapshot == "true" ? "-SNAPSHOT" : ""}"
+
+/**
+ * settings for all modules including root-module
+ */
+allprojects {
+    sourceCompatibility = javaTargetVersion
+    targetCompatibility = javaTargetVersion
+}
 
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
@@ -31,3 +52,26 @@ artifacts {
     archives sourcesJar
     archives javadocJar
 }
+
+signing {
+    required { gradle.taskGraph.hasTask("uploadArchives") }
+    useGpgCmd()
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "${mavenStagingRepositoryUrl}") {
+                authentication(userName: mavenUsername, password: mavenPassword)
+            }
+
+            snapshotRepository(url: "${mavenSnapshotsRepositoryUrl}") {
+                authentication(userName: mavenUsername, password: mavenPassword)
+            }
+        }
+    }
+}
+uploadArchives.dependsOn build

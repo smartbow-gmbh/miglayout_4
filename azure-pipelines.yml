@@ -30,7 +30,7 @@ steps:
         -PmavenPassword=$(ARTIFACTORY_PASSWORD)
         -PmavenSnapshotsRepositoryUrl=$(ARTIFACTORY_URL)/$(ARTIFACTORY_SNAPSHOT_REPO)
         -PmavenStagingRepositoryUrl=$(ARTIFACTORY_URL)/$(ARTIFACTORY_REPO)
-        -Psigning.gnupg.useLegacyGpg=true
+        -Psigning.gnupg.useLegacyGpg=false
         -Psigning.gnupg.keyName=$(signingkey_id)
         -Psigning.gnupg.passphrase=$(signingkey_passphrase)
     tasks: 'uploadArchives'
